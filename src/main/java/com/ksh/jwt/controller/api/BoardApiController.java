@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,13 +36,13 @@ public class BoardApiController {
 	}
 	//인덱스 . 모든 글들을 출력
 	@GetMapping("/index")
-	public ResponseDto<Page<Board>> boardList(@PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public ResponseDto<Page<Board>> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);
 		return new ResponseDto<Page<Board>>(HttpStatus.OK.value(),board);
 	}
-	//검색기능 -> 페이징 아직 안됨
+	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
 	@GetMapping("/index/{keyword}")
-	public ResponseDto<List<Board>> boardSearch(@PathVariable String keyword,@PageableDefault(size=3,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public ResponseDto<List<Board>> boardSearch(@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		List<Board> board =boardService.search(pageable,keyword);
 		return new ResponseDto<List<Board>>(HttpStatus.OK.value(),board);
 	}

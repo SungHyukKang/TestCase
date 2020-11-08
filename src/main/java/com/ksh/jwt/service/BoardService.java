@@ -39,7 +39,8 @@ public class BoardService {
 	}
 
 	public List<Board> search(Pageable pageable,String keyword) {
-		List<Board> list = boardRepository.findByTitleContaining(keyword);
+		List<Board> list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
+		
 		return list;
 	}
 }
