@@ -28,13 +28,13 @@ public class BoardApiController {
 	private BoardService boardService;
 	
 	//글쓰기  ,  
-	//문제를 내기위해서는 먼저 글 작성 후 문제를 작성하는식.
+	//문제를 내기 위해서는 먼저 글 작성 후 문제를 작성하는식.
 	@PostMapping("/board/save")
 	public ResponseDto<String> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
 		boardService.save(board,principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
-	//인덱스 . 모든 글들을 출력
+	//인덱스 . 모든 글들을 출력 -> 페이징 완료
 	@GetMapping("/index")
 	public ResponseDto<Page<Board>> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);

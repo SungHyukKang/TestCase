@@ -31,13 +31,14 @@ public class BoardService {
 		return boardRepository.findAll(pageable);
 	}
 	
+	@Transactional(readOnly=true)
 	public Board view(int id) {
 		Board board = boardRepository.findById(id).orElseThrow(()->{
 			return new IllegalArgumentException("글을 읽어올 수 없습니다.");
 		});
 		return board;
 	}
-
+	@Transactional(readOnly=true)
 	public List<Board> search(Pageable pageable,String keyword) {
 		List<Board> list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
 		
