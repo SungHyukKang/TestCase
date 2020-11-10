@@ -19,7 +19,6 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 	
-	
 	@Transactional
 	public void save(Board board , User user) {
 		board.setUser(user);
@@ -38,10 +37,16 @@ public class BoardService {
 		});
 		return board;
 	}
+	
 	@Transactional(readOnly=true)
 	public List<Board> search(Pageable pageable,String keyword) {
 		List<Board> list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
-		
 		return list;
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Board> myBoard(int userId, Pageable pageable) {
+		List<Board> mb=boardRepository.findByUserId(userId,pageable);
+		return mb;
 	}
 }

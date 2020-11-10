@@ -1,5 +1,6 @@
 package com.ksh.jwt.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,4 +53,14 @@ public class BoardApiController {
 		Board board = boardService.view(id);
 		return board;
 	}
+	
+	
+	@GetMapping("mypage/myBoard")
+	public List<Board> myBoard(@AuthenticationPrincipal PrincipalDetails principal,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+		int userId = principal.getUser().getId();
+		List<Board> mb = boardService.myBoard(userId,pageable);
+		System.out.println(mb.get(0).getTitle());
+		return mb;
+	}
+	
 }
