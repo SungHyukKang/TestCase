@@ -36,20 +36,20 @@ public class BoardApiController {
 	}
 	//인덱스 . 모든 글들을 출력 -> 페이징 완료
 	@GetMapping("/index")
-	public ResponseDto<Page<Board>> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public Page<Board> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);
-		return new ResponseDto<Page<Board>>(HttpStatus.OK.value(),board);
+		return board;
 	}
 	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
 	@GetMapping("/index/{keyword}")
-	public ResponseDto<List<Board>> boardSearch(@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public List<Board> boardSearch(@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		List<Board> board =boardService.search(pageable,keyword);
-		return new ResponseDto<List<Board>>(HttpStatus.OK.value(),board);
+		return board;
 	}
 	// 글 상세보기 .
 	@GetMapping("/board/{id}")
-	public ResponseDto<Board> view(@PathVariable int id ){
+	public Board  view(@PathVariable int id ){
 		Board board = boardService.view(id);
-		return new ResponseDto<Board>(HttpStatus.OK.value(),board);
+		return board;
 	}
 }

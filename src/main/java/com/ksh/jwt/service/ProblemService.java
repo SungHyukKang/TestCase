@@ -19,17 +19,21 @@ public class ProblemService {
 	private BoardRepository boardRepository;
 	
 	@Transactional
-	public void write(int boardId,Problem problem,String username) {
+	public void write(int boardId,Problem[] problems,String username) {
+		System.out.println("!!");
 		Board board =boardRepository.findById(boardId).get();
 		if(username.equals(board.getUser().getUsername())){
-			String title =problem.getTitle();
-			String num1 =problem.getNum1();
-			String num2 =problem.getNum2();
-			String num3 =problem.getNum3();
-			String num4 =problem.getNum4();
-			String num5 =problem.getNum5();
-			String answer =problem.getAnswer();
-			problemRepository.write(title, num1, num2, num3, num4, num5, boardId, answer);
+			for(Problem p : problems) {
+			System.out.println(p.toString());
+			String title =p.getTitle();
+			String num1 =p.getNum1();
+			String num2 =p.getNum2();
+			String num3 =p.getNum3();
+			String num4 =p.getNum4();
+//			String num5 =problem.getNum5();
+			String answer =p.getAnswer();
+			problemRepository.write(title, num1, num2, num3, num4,  boardId, answer);
+			}
 		}else {
 			throw new IllegalArgumentException("글 작성자가 아닙니다.");
 		}

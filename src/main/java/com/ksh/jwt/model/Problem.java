@@ -28,8 +28,8 @@ public class Problem {
 	private String num3;
 	@Column(nullable=false)
 	private String num4;
-	@Column(nullable=false)
-	private String num5;
+//	@Column(nullable=false)
+//	private String num5;
 	
 	@ManyToOne//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId")
@@ -37,4 +37,12 @@ public class Problem {
 	
 	@Column(nullable=false)
 	private String answer;
+
+	@Override
+	public String toString() {
+		return "Problem [id=" + id + ", title=" + title + ", num1=" + num1 + ", num2=" + num2 + ", num3=" + num3
+				+ ", num4=" + num4 + ", board=" + board + ", answer=" + answer + "]";
+	}
+	
+	
 }
