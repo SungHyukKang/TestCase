@@ -23,7 +23,7 @@ public class Problem {
 	@Column(nullable=false)
 	private String num1;
 	@Column(nullable=false)
-	private String num2;
+	private String num2; 
 	@Column(nullable=false)
 	private String num3;
 	@Column(nullable=false)
