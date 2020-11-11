@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -29,6 +30,11 @@ public class Board {
 
 	@Column(nullable = false,length=100) // 널 허용 X , 길이 최대 100
 	private String title;
+	
+	@Lob
+	private String content;
+	
+	private String image;
 	
 	@OneToMany(mappedBy = "board",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) //1 대 N 관계 , mappedBy를 선언함으로서 연관관계의 주인이 아니다. 즉 테이블의 구성요소가
 	@JsonIgnoreProperties({"board"}) // 무한 참조 방지 
