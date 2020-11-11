@@ -1,8 +1,6 @@
 package com.ksh.jwt.controller.api;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.ResponseDto;
 import com.ksh.jwt.model.Board;
@@ -53,6 +50,7 @@ public class BoardApiController {
 		Board board = boardService.view(id);
 		return board;
 	}
+	
 	
 	
 	@GetMapping("mypage/myBoard")

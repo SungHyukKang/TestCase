@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ksh.jwt.config.jwt.JwtProperties;
 import com.ksh.jwt.dto.ResponseDto;
-import com.ksh.jwt.dto.ResponseEntityDto;
-import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.UserRepository;
 import com.ksh.jwt.service.BoardService;
