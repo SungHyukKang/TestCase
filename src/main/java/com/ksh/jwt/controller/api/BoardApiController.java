@@ -51,8 +51,6 @@ public class BoardApiController {
 		return board;
 	}
 	
-	
-	
 	@GetMapping("mypage/myBoard")
 	public List<Board> myBoard(@AuthenticationPrincipal PrincipalDetails principal,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		int userId = principal.getUser().getId();

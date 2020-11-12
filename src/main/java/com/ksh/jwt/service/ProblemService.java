@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
+import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
+import com.ksh.jwt.repository.UserRepository;
 
 @Service
 public class ProblemService {
@@ -18,9 +20,11 @@ public class ProblemService {
 	@Autowired 
 	private BoardRepository boardRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
 	@Transactional
 	public void write(int boardId,Problem[] problems,String username) {
-		System.out.println("!!");
 		Board board =boardRepository.findById(boardId).get();
 		if(username.equals(board.getUser().getUsername())){
 			for(Problem p : problems) {
@@ -38,4 +42,9 @@ public class ProblemService {
 			throw new IllegalArgumentException("글 작성자가 아닙니다.");
 		}
 	}
+
+	
+	
+	
+	
 }

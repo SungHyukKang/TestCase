@@ -10,9 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import lombok.Builder.Default;
 import lombok.Data;
 @Data
 @Entity
@@ -32,14 +35,35 @@ public class User {
 	@Column(nullable=false ,length=150)
 	private String email;
 	
+	
+	
+	@CreationTimestamp
+	private Timestamp createDate;
+	
+	@Lob
+	private String solved;
+	@Lob
+	private String wrong;
+	
+	public List<String> getSolvedList(){
+		if(this.solved.length()>0) {
+			return Arrays.asList(this.solved.toString().split(" "));
+		}
+		return new ArrayList<>();
+	}
+	
+	public List<String> getWrongList(){
+		if(this.wrong.length()>0) {
+			return Arrays.asList(this.wrong.toString().split(" "));
+		}
+		return new ArrayList<>();
+	}
+	
 	public List<String> getRoleList(){
         if(this.roles.toString().length() > 0){
             return Arrays.asList(this.roles.toString().split(","));
         }
         return new ArrayList<>();
     }
-	
-	@CreationTimestamp
-	private Timestamp createDate;
 	
 }

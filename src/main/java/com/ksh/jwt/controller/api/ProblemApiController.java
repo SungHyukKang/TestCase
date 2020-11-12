@@ -19,6 +19,8 @@ public class ProblemApiController {
 	@Autowired //DI 메모리에 띄움
 	private ProblemService problemService;
 	
+	
+	
 	//글 작성 후 문제를 작성.
 	@PostMapping("/board/{id}/write")
 	public ResponseDto<String> write(@PathVariable int id,@RequestBody Problem[] problems,@AuthenticationPrincipal PrincipalDetails principal){
