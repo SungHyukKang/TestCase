@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ksh.jwt.config.auth.PrincipalDetails;
-import com.ksh.jwt.dto.ResponseDto;
-import com.ksh.jwt.dto.SolvedDto;
-import com.ksh.jwt.dto.UpdateUserDto;
+import com.ksh.jwt.dto.common.ResponseDto;
+import com.ksh.jwt.dto.problem.SolvedDto;
+import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.UserRepository;
 

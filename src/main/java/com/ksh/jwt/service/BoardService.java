@@ -35,6 +35,8 @@ public class BoardService {
 		Board board = boardRepository.findById(id).orElseThrow(()->{
 			return new IllegalArgumentException("글을 읽어올 수 없습니다.");
 		});
+		board.setCount(board.getCount()+1);
+		boardRepository.save(board);
 		return board;
 	}
 	

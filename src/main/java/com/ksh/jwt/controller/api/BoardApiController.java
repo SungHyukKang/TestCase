@@ -8,14 +8,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
-import com.ksh.jwt.dto.ResponseDto;
+import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
+import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.service.BoardService;
 
 @RestController
@@ -29,6 +31,7 @@ public class BoardApiController {
 	//문제를 내기 위해서는 먼저 글 작성 후 문제를 작성하는식.
 	@PostMapping("/board/save")
 	public ResponseDto<String> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
+		board.setCount(0);
 		boardService.save(board,principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
@@ -50,7 +53,7 @@ public class BoardApiController {
 		Board board = boardService.view(id);
 		return board;
 	}
-	
+	//내가 쓴 글 보기
 	@GetMapping("mypage/myBoard")
 	public List<Board> myBoard(@AuthenticationPrincipal PrincipalDetails principal,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		int userId = principal.getUser().getId();
@@ -59,4 +62,9 @@ public class BoardApiController {
 		return mb;
 	}
 	
+	@DeleteMapping("/board/delete/{id}")
+	public ResponseDto<String> deleteBoard(@PathVariable int id){
+		
+		return new ResponseDto<>(HttpStatus.OK.value(),"1");
+	}
 }

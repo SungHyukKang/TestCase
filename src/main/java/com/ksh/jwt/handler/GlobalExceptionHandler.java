@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ksh.jwt.dto.ResponseDto;
+import com.ksh.jwt.dto.common.ResponseDto;
 
 
 @ControllerAdvice

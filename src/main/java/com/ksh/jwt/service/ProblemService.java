@@ -1,16 +1,20 @@
 package com.ksh.jwt.service;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
-import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
-import com.ksh.jwt.repository.UserRepository;
 
 @Service
 public class ProblemService {
@@ -19,10 +23,7 @@ public class ProblemService {
 	
 	@Autowired 
 	private BoardRepository boardRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
+
 	@Transactional
 	public void write(int boardId,Problem[] problems,String username) {
 		Board board =boardRepository.findById(boardId).get();
@@ -42,9 +43,24 @@ public class ProblemService {
 			throw new IllegalArgumentException("글 작성자가 아닙니다.");
 		}
 	}
-
 	
 	
 	
-	
+	@Transactional(readOnly = true)
+	public HashMap<Integer,List<MySolvedDto>> mySolved(List<String> solvedList) {
+		Collections.sort(solvedList);
+		HashMap<Integer,List<MySolvedDto>> hsmap =new HashMap<>();
+		for(String X : solvedList) {
+			int z =Integer.parseInt(X);
+			Problem pro = problemRepository.findById(z).orElseThrow(()->{
+				return new IllegalArgumentException("말이 안되는 오류");
+			});
+			int boardId=pro.getBoard().getId();
+			if(hsmap.get(boardId)==null){
+				hsmap.put(boardId,new ArrayList<>());
+			}
+			hsmap.get(boardId).add(new MySolvedDto(z,pro.getTitle()));
+		}
+		return hsmap;
+	}
 }

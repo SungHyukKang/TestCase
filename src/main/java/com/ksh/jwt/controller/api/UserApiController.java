@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
-import com.ksh.jwt.dto.ResponseDto;
-import com.ksh.jwt.dto.SolvedDto;
-import com.ksh.jwt.dto.UpdateUserDto;
+import com.ksh.jwt.dto.common.ResponseDto;
+import com.ksh.jwt.dto.problem.SolvedDto;
+import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
+import com.ksh.jwt.repository.ProblemRepository;
 import com.ksh.jwt.repository.UserRepository;
 import com.ksh.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +23,18 @@ import lombok.RequiredArgsConstructor;
 public class UserApiController {
 	
 	private final UserRepository userRepository;
+	private final ProblemRepository problemRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final UserService userService;
 	
 	@PostMapping("/solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
+		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
+			return new IllegalArgumentException("문제가 존재하지 않습니다.");
+		});
 		userService.solvedCheck(solved.getProblemId(),solved.getSolvedStatus(),principal.getUser().getId());
-		
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
-	
-	
 	
 	//회원가입.
 	@PutMapping("update")

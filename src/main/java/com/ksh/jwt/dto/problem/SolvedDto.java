@@ -1,4 +1,4 @@
-package com.ksh.jwt.dto;
+package com.ksh.jwt.dto.problem;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

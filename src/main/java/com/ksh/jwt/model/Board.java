@@ -36,6 +36,8 @@ public class Board {
 	
 	private String image;
 	
+	private int count;
+	
 	@OneToMany(mappedBy = "board",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) //1 대 N 관계 , mappedBy를 선언함으로서 연관관계의 주인이 아니다. 즉 테이블의 구성요소가
 	@JsonIgnoreProperties({"board"}) // 무한 참조 방지 
 	private List<Problem> problems;

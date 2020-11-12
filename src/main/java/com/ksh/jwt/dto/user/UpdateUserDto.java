@@ -1,4 +1,4 @@
-package com.ksh.jwt.dto;
+package com.ksh.jwt.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
