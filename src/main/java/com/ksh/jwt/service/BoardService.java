@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
@@ -30,14 +31,14 @@ public class BoardService {
 		return boardRepository.findAll(pageable);
 	}
 	
-	@Transactional(readOnly=true)
-	public Board view(int id) {
+	@Transactional
+	public BoardViewDto view(int id) {
 		Board board = boardRepository.findById(id).orElseThrow(()->{
 			return new IllegalArgumentException("글을 읽어올 수 없습니다.");
 		});
-		board.setCount(board.getCount()+1);
-		boardRepository.save(board);
-		return board;
+		boardRepository.counter(id);
+		BoardViewDto bvd = new BoardViewDto(board.getId(), board.getTitle(), board.getContent(), board.getImage(), board.getCount(), board.getProblems(), board.getUser().getId(),board.getUser().getUsername(), board.getCreateDate());
+		return bvd;
 	}
 	
 	@Transactional(readOnly=true)
@@ -50,5 +51,16 @@ public class BoardService {
 	public List<Board> myBoard(int userId, Pageable pageable) {
 		List<Board> mb=boardRepository.findByUserId(userId,pageable);
 		return mb;
+	}
+	@Transactional
+	public void deleteBoard(int id, int boardId) {
+		Board board =boardRepository.findById(boardId).orElseThrow(()->{
+			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+		});
+		if(board.getUser().getId()!=id) {
+			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
+		}else {
+			boardRepository.deleteById(boardId);
+		}
 	}
 }

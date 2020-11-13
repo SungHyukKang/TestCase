@@ -51,7 +51,7 @@ public class ProblemApiController {
 		});
 		return list;
 	}
-
+	
 	@GetMapping("/mypage/myWrong")
 	public List<SolvedResponseDto> myWrong(@AuthenticationPrincipal PrincipalDetails principal) {
 		HashMap<Integer, List<MySolvedDto>> hsmap = problemService.mySolved(principal.getUser().getWrongList());
@@ -68,5 +68,4 @@ public class ProblemApiController {
 		});
 		return list;
 	}
-
 }

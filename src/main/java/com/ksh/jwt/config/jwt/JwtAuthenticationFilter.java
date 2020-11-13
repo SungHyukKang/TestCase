@@ -51,6 +51,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			System.out.println(authenticationToken);
 			Authentication authentication=
 					authenticationManager.authenticate(authenticationToken);
+			//authenticate() 함수가 호출되면 인증 프로바이더가 UserDetailService의 loadUserByUsername(토큰의 첫번째 파라미터)을 호출하고
+			//UserDetails를 리턴 받아서 토큰의 두번째 파라미터(credential)과 UserDetails(DB값)의 getPassword()와 비교해서 동일하면
+			//Authentication 객체를 만들어서 필터체인으로 리턴해준다.
+			//결론 : 인증 프로바이더에게 알려 줄 필요 없음.
 			//authentication 객체를 session 영역에 저장 해야하고 그 방법이 return 해주면 됨
 			//리턴의 이유는 권한 관리를 security가 대신 해주기 때문에 편하려고 하는거임
 			//굳이 JWT 토큰을 사용하면서 세션을 만들 이유가 없음.근데 단지 권한 처리때문에 session에 넣어준다.
@@ -78,14 +82,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		PrintWriter out = response.getWriter();
 		String jwtToken = JWT.create()
 				.withSubject("토큰")
-				.withExpiresAt(new Date(System.currentTimeMillis()+(6000000)*10))
+				.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
 				.withClaim("id", principalDetails.getUser().getId())
 				.withClaim("username", principalDetails.getUser().getUsername())
 				.sign(Algorithm.HMAC512(JwtProperties.SECRET));
 		
 		String refToken = JWT.create()
 				.withSubject("토큰")
-				.withExpiresAt(new Date(System.currentTimeMillis()+(600000)*10))
+				.withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME*1000))
 				.withClaim("id", principalDetails.getUser().getId())
 				.withClaim("username", principalDetails.getUser().getUsername())
 				.sign(Algorithm.HMAC512(JwtProperties.SECRET));

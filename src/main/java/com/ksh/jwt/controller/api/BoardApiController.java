@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
+import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
+import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.service.BoardService;
 
@@ -49,22 +51,22 @@ public class BoardApiController {
 	}
 	// 글 상세보기 .
 	@GetMapping("/board/{id}")
-	public Board  view(@PathVariable int id ){
-		Board board = boardService.view(id);
-		return board;
+	public BoardViewDto view(@PathVariable int id ){
+		BoardViewDto boardView = boardService.view(id);
+		
+		return boardView;
 	}
 	//내가 쓴 글 보기
 	@GetMapping("mypage/myBoard")
 	public List<Board> myBoard(@AuthenticationPrincipal PrincipalDetails principal,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		int userId = principal.getUser().getId();
 		List<Board> mb = boardService.myBoard(userId,pageable);
-		System.out.println(mb.get(0).getTitle());
 		return mb;
 	}
 	
-	@DeleteMapping("/board/delete/{id}")
-	public ResponseDto<String> deleteBoard(@PathVariable int id){
-		
+	@DeleteMapping("/board/delete/{boardId}")
+	public ResponseDto<String> deleteBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId){
+		boardService.deleteBoard(principal.getUser().getId(),boardId);
 		return new ResponseDto<>(HttpStatus.OK.value(),"1");
 	}
 }
