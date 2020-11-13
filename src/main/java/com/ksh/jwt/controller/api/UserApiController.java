@@ -1,9 +1,13 @@
 package com.ksh.jwt.controller.api;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
+import com.ksh.jwt.dto.user.FindPwDto;
+import com.ksh.jwt.dto.user.MailDto;
 import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.ProblemRepository;
 import com.ksh.jwt.repository.UserRepository;
+import com.ksh.jwt.service.EmailService;
 import com.ksh.jwt.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +33,7 @@ public class UserApiController {
 	private final ProblemRepository problemRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final UserService userService;
-	
+	private final EmailService emailService;
 	@PostMapping("/solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
 		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
@@ -54,4 +61,20 @@ public class UserApiController {
 		userRepository.save(user);
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+	
+	@GetMapping("/findPw")
+	public Map<String,Boolean> findPw(@RequestBody FindPwDto pwDto){
+		Map<String,Boolean> map =new HashMap<>();
+		boolean pwFindCheck= userService.userEmailCheck(pwDto.getUsername(),pwDto.getEmail());
+		map.put("check",pwFindCheck);
+		return map;
+	}
+	
+	@PostMapping("/findPw/sendEmail")
+	public ResponseDto<String> sendEmail(@RequestBody FindPwDto pwDto) {
+		MailDto dto = emailService.createMailAndChangePassword(pwDto.getEmail(),pwDto.getUsername());
+		emailService.mailSend(dto);
+		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+	}
+	
 }

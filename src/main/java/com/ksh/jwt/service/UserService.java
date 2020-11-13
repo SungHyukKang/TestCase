@@ -99,4 +99,13 @@ public class UserService {
 		userRepository.save(u);
 	}
 
+	public boolean userEmailCheck(String username, String email) {
+		User user = userRepository.findByEmail(email);
+		System.out.println(user.getEmail());
+		if(user!=null&&user.getUsername().equals(username)) {
+			return true;
+		}
+		return false;
+	}
+
 }
