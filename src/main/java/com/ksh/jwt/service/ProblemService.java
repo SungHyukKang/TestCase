@@ -44,6 +44,14 @@ public class ProblemService {
 		}
 	}
 	
+	@Transactional(readOnly=true)
+	public Problem view(int problemId) {
+		Problem problem = problemRepository.findById(problemId).orElseThrow(()->{
+			return new IllegalArgumentException("문제가 존재하지 않습니다.");
+		});
+		return problem;
+	}
+	
 	
 	
 	@Transactional(readOnly = true)

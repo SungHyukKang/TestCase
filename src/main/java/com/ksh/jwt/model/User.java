@@ -32,7 +32,7 @@ public class User {
 	
 	private String roles;
 	
-	@Column(nullable=false ,length=150)
+	@Column(nullable=false ,length=150,unique=true)
 	private String email;
 	
 	

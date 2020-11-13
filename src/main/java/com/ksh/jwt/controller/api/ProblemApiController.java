@@ -3,7 +3,9 @@ package com.ksh.jwt.controller.api;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,22 @@ public class ProblemApiController {
 	@Autowired // DI 메모리에 띄움
 	private ProblemService problemService;
 
+	
+	@GetMapping("board/{boardId}/{problemId}")
+	public Map<String,String> problemView(@PathVariable int problemId){
+		Problem problem =problemService.view(problemId);
+		Map<String,String> hsmap =new LinkedHashMap<>();
+		hsmap.put("id",String.valueOf(problem.getId()));
+		hsmap.put("title",problem.getTitle());
+		hsmap.put("num1",problem.getNum1());
+		hsmap.put("num2",problem.getNum2());
+		hsmap.put("num3",problem.getNum3());
+		hsmap.put("num4",problem.getNum4());
+		hsmap.put("answer",problem.getAnswer());
+		hsmap.put("boardId",String.valueOf(problem.getBoard().getId()));
+		return hsmap;
+	}
+	
 	// 글 작성 후 문제를 작성.
 	@PostMapping("board/{id}/write")
 	public ResponseDto<String> write(@PathVariable int id, @RequestBody Problem[] problems,
