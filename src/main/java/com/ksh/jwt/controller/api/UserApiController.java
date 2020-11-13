@@ -34,7 +34,7 @@ public class UserApiController {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
-	@PostMapping("/solvedCheck")
+	@PostMapping("solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
 		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
 			return new IllegalArgumentException("문제가 존재하지 않습니다.");
@@ -62,18 +62,20 @@ public class UserApiController {
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	
-	@GetMapping("/findPw")
+	@GetMapping("findPw")
 	public Map<String,Boolean> findPw(@RequestBody FindPwDto pwDto){
 		Map<String,Boolean> map =new HashMap<>();
 		boolean pwFindCheck= userService.userEmailCheck(pwDto.getUsername(),pwDto.getEmail());
 		map.put("check",pwFindCheck);
+		System.out.println("check완료");
 		return map;
 	}
 	
-	@PostMapping("/findPw/sendEmail")
+	@PostMapping("findPw/sendEmail")
 	public ResponseDto<String> sendEmail(@RequestBody FindPwDto pwDto) {
 		MailDto dto = emailService.createMailAndChangePassword(pwDto.getEmail(),pwDto.getUsername());
 		emailService.mailSend(dto);
+		System.out.println("메일 보내기 완료");
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	

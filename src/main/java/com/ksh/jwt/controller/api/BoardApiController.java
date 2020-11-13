@@ -38,19 +38,19 @@ public class BoardApiController {
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	//인덱스 . 모든 글들을 출력 -> 페이징 완료
-	@GetMapping("/index")
+	@GetMapping("index")
 	public Page<Board> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);
 		return board;
 	}
 	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
-	@GetMapping("/index/{keyword}")
+	@GetMapping("index/{keyword}")
 	public List<Board> boardSearch(@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		List<Board> board =boardService.search(pageable,keyword);
 		return board;
 	}
 	// 글 상세보기 .
-	@GetMapping("/board/{id}")
+	@GetMapping("board/{id}")
 	public BoardViewDto view(@PathVariable int id ){
 		BoardViewDto boardView = boardService.view(id);
 		
@@ -64,7 +64,7 @@ public class BoardApiController {
 		return mb;
 	}
 	
-	@DeleteMapping("/board/delete/{boardId}")
+	@DeleteMapping("board/delete/{boardId}")
 	public ResponseDto<String> deleteBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId){
 		boardService.deleteBoard(principal.getUser().getId(),boardId);
 		return new ResponseDto<>(HttpStatus.OK.value(),"1");
