@@ -52,6 +52,9 @@ public class UserApiController {
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	
+	
+	
+	
 	@PostMapping("join")
 	public ResponseDto<String> join(@RequestBody User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));//비밀번호 암호화 .
@@ -70,6 +73,17 @@ public class UserApiController {
 		System.out.println("check완료");
 		return map;
 	}
+	
+	@PostMapping("/join/emailCheck")
+	public Map<String,String> emailCheck(@RequestBody Map<String,String> email){
+		System.out.println(email.get("email"));
+		MailDto dto = emailService.checkEmail(email.get("email"));
+		emailService.mailSend(dto);
+		Map<String,String> hsmap =new HashMap<>();
+		hsmap.put("authKey",dto.getAuthKey() );
+		return hsmap;
+	}
+	
 	
 	@PostMapping("findPw/sendEmail")
 	public ResponseDto<String> sendEmail(@RequestBody FindPwDto pwDto) {

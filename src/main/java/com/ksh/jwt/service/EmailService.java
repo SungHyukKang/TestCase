@@ -35,7 +35,18 @@ public class EmailService {
         updatePassword(str,userEmail);
         return dto;
     }
-
+    
+    public MailDto checkEmail(String userEmail) {
+    	System.out.println("checkEmail"+ userEmail);
+    	String str =getTempPassword();
+    	MailDto dto = new MailDto();
+    	dto.setAddress(userEmail);
+    	dto.setTitle("퀴즈 앱 가입 인증 안내 이메일입니다.");
+    	dto.setMessage("안녕하세요. 가입 인증 코드 안내 관련 이메일 입니다.\n 인증 번호는 : "+str+" 입니다.");
+    	dto.setAuthKey(str);
+    	return dto;
+    }
+    
     @Transactional
     public void updatePassword(String str,String userEmail){
         String pw = encoder.encode(str);
