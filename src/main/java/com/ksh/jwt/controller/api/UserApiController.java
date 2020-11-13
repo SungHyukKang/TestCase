@@ -62,7 +62,7 @@ public class UserApiController {
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	
-	@GetMapping("findPw")
+	@PostMapping("/findPw")
 	public Map<String,Boolean> findPw(@RequestBody FindPwDto pwDto){
 		Map<String,Boolean> map =new HashMap<>();
 		boolean pwFindCheck= userService.userEmailCheck(pwDto.getUsername(),pwDto.getEmail());
