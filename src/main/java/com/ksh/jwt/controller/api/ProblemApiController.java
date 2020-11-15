@@ -30,9 +30,6 @@ public class ProblemApiController {
 
 	@Autowired // DI 메모리에 띄움
 	private ProblemService problemService;
-
-	
-	
 	
 	@GetMapping("board/{boardId}/{problemId}")
 	public Map<String,String> problemView(@PathVariable int problemId){

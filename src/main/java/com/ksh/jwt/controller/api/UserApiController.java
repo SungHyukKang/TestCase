@@ -1,8 +1,10 @@
 package com.ksh.jwt.controller.api;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
+import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.email.EmailCheckDto;
 import com.ksh.jwt.dto.email.MailDto;
@@ -39,6 +42,7 @@ public class UserApiController {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final UserService userService;
 	private final EmailService emailService;
+	
 	@PostMapping("solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
 		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
@@ -47,6 +51,22 @@ public class UserApiController {
 		userService.solvedCheck(solved.getProblemId(),solved.getSolvedStatus(),principal.getUser().getId());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+	
+	@GetMapping("/favoriteList")
+	public List<BoardViewDto> favoriteList(@AuthenticationPrincipal PrincipalDetails principal){
+		List<BoardViewDto> list= userService.favoriteList(principal.getUser().getFavoriteList());
+		return list;
+	}
+	
+	
+	@GetMapping("/favorite/{boardId}")
+	public ResponseDto<String> addFavorite(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId){
+		int userId =principal.getUser().getId();
+		userService.addFavorite(userId,boardId);
+		
+		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+	}
+	
 	
 	//회원가입.
 	@PutMapping("update")

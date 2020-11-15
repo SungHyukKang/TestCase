@@ -45,6 +45,14 @@ public class User {
 	@ColumnDefault("")
 	private String favorite;
 	
+	public List<String> getFavoriteList(){
+		if(this.favorite.length()>0) {
+			return Arrays.asList(this.favorite.toString().split(" "));
+		}
+		return new ArrayList<>();
+	}
+	
+	
 	public List<String> getSolvedList(){
 		if(this.solved.length()>0) {
 			return Arrays.asList(this.solved.toString().split(" "));

@@ -4,12 +4,17 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.email.MailDto;
 import com.ksh.jwt.repository.UserRepository;
 
@@ -27,7 +32,7 @@ public class EmailService {
 	@Autowired
     private JavaMailSender mailSender;
     private static final String FROM_ADDRESS = "quizappapiserver@gmail.com";
-    
+
     @Transactional
     public MailDto createMailAndChangePassword(String userEmail, String userName){
         String str = getTempPassword();

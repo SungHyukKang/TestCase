@@ -1,22 +1,22 @@
 package com.ksh.jwt.service;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.ksh.jwt.config.auth.PrincipalDetails;
-import com.ksh.jwt.dto.common.ResponseDto;
-import com.ksh.jwt.dto.problem.SolvedDto;
+import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.user.UpdateUserDto;
+import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
+import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.UserRepository;
+
 
 @Service
 public class UserService {
@@ -24,6 +24,9 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BoardRepository boardRepository;
+	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -61,9 +64,7 @@ public class UserService {
 			if (!u.getWrong().equals(""))
 				for (String X : u.getWrongList()) {
 					if (Integer.parseInt(X) == problemId) {
-						String x = u.getWrong().replace(X, "");
-						x = x.replace("  ", " ");
-						x = x.trim();
+						String x = replacePerfect(u.getWrong(),X);
 						u.setWrong(x);
 						break;
 					}
@@ -127,5 +128,52 @@ public class UserService {
 		}
 		return false;
 	}
+	
+	
+	
+	public void addFavorite(int userId, int boardId) {
+		User u = userRepository.findById(userId).orElseThrow(()->{
+			return new IllegalArgumentException("아이디가 존재하지 않습니다.");
+		});
+		boardRepository.findById(boardId).orElseThrow(()->{
+			return new IllegalArgumentException("게시글이 존재하지 않습니다.");
+		});
+		String fa = u.getFavorite();
+		for(String X : u.getFavoriteList()) {
+			if(boardId==Integer.parseInt(X)) {
+				fa =replacePerfect(fa,X);
+				u.setFavorite(fa);
+				userRepository.save(u);
+				return ;
+			}
+		}
+		fa=fa+" "+String.valueOf(boardId);
+		u.setFavorite(fa.trim());
+		userRepository.save(u);
+	}
+	
+	public  String replacePerfect(String str,String change) {
+		StringBuilder sb = new StringBuilder();
+		for(String X : str.split(" ")) {
+			if(X.equals(change)) {
+				continue;
+			}
+			sb.append(X+" ");
+		}
+		return sb.toString().trim();
+	}
 
+	@Transactional(readOnly=true)
+	public List<BoardViewDto>favoriteList(List<String> list) {
+		Collections.reverse(list);
+		ArrayList<BoardViewDto> arrlist= new ArrayList<>();
+		for(String X : list) {
+			Board board = boardRepository.findById(Integer.parseInt(X)).orElseThrow(()->{
+				return new IllegalArgumentException(X+"번 게시글이 존재하지 않습니다.");
+			});
+			BoardViewDto bvd = new BoardViewDto(board.getId(), board.getTitle(), board.getContent(), board.getImage(), board.getCount(), null, board.getUser().getId(),board.getUser().getUsername(), board.getCreateDate());
+			arrlist.add(bvd);
+		}
+		return arrlist;
+	}
 }
