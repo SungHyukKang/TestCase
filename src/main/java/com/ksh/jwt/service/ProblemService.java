@@ -17,13 +17,12 @@ import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
 
 @Service
+//@RequiredArgsConstructor -> @Authwired 생략 가능 final로 선언
 public class ProblemService {
 	@Autowired
 	private ProblemRepository problemRepository;
-	
 	@Autowired 
 	private BoardRepository boardRepository;
-
 	@Transactional
 	public void write(int boardId,Problem[] problems,String username) {
 		Board board =boardRepository.findById(boardId).get();
@@ -71,4 +70,5 @@ public class ProblemService {
 		}
 		return hsmap;
 	}
+
 }

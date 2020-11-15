@@ -108,4 +108,9 @@ public class UserService {
 		return false;
 	}
 
+	public String vsView(String vsUsername) {
+		String result =userRepository.findByUsername(vsUsername).getSolved();
+		return result ;
+	}
+
 }

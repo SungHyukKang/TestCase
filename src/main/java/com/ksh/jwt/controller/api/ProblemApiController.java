@@ -20,7 +20,9 @@ import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.dto.problem.SolvedResponseDto;
+import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.model.Problem;
+import com.ksh.jwt.model.User;
 import com.ksh.jwt.service.ProblemService;
 
 @RestController
@@ -29,6 +31,8 @@ public class ProblemApiController {
 	@Autowired // DI 메모리에 띄움
 	private ProblemService problemService;
 
+	
+	
 	
 	@GetMapping("board/{boardId}/{problemId}")
 	public Map<String,String> problemView(@PathVariable int problemId){

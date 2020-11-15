@@ -2,12 +2,14 @@ package com.ksh.jwt.controller.api;
 
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.email.EmailCheckDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
+import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.dto.user.FindPwDto;
 import com.ksh.jwt.dto.user.MailDto;
 import com.ksh.jwt.dto.user.UpdateUserDto;
@@ -53,7 +56,35 @@ public class UserApiController {
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	
-	
+	@GetMapping("vs/{vsUsername}")
+	public VsDto vsView(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable String vsUsername) {
+		VsDto vs = new VsDto();
+		String mySolved = principal.getUser().getSolved();
+		String vsSolved = userService.vsView(vsUsername);
+		Map<String,Integer> hsmap =new LinkedHashMap<>();
+		for(String X :mySolved.split(" ")) {
+			hsmap.put(X,1);
+		}
+		for(String X :vsSolved.split(" ")) {
+			hsmap.put(X,hsmap.getOrDefault(X,3)+1);
+		}
+		StringBuilder sb1 = new StringBuilder();
+		StringBuilder sb2 =new StringBuilder();
+		StringBuilder sb3 =new StringBuilder();
+		for(String key : hsmap.keySet()) {
+			if(hsmap.get(key)==1) {
+				sb1.append(key+" ");
+			}else if(hsmap.get(key)==4) {
+				sb2.append(key+" ");
+			}else {
+				sb3.append(key+" " );
+			}
+		}
+		vs.setAll(sb3.toString().trim());
+		vs.setMySolved(sb1.toString().trim());
+		vs.setVsSolved(sb2.toString().trim());
+		return vs;
+	}
 	
 	
 	@PostMapping("join")

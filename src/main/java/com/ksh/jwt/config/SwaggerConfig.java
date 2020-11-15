@@ -1,6 +1,5 @@
 package com.ksh.jwt.config;
 
-import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
