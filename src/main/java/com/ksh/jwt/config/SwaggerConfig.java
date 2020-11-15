@@ -19,15 +19,4 @@ public class SwaggerConfig {
 		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any()).build();
 	}
-//	
-//	private ApiInfo apiInfo() {
-//		return new ApiInfo(
-//				"Hello",
-//				"Some",
-//				"API TOS",
-//				"Terms ",
-//				new Contact("","www.example.com", "myAddres@naver.com"),
-//				"LICENES OF API","API URL"
-//				);
-//	}
 }

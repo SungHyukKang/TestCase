@@ -105,10 +105,14 @@ public class UserApiController {
 	}
 	
 	@PostMapping("/findUsername")
-	public String findUsername(@RequestBody EmailCheckDto emailCheckDto){
+	public ResponseDto<String> findUsername(@RequestBody EmailCheckDto emailCheckDto){
 		String username= userService.userEmailCheck(emailCheckDto.getEmail());
-		System.out.println("check완료");
-		return username;
+		if(username!=null) {
+			emailService.sendEmailId(username,emailCheckDto.getEmail());
+			return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+		}else {
+			throw new IllegalArgumentException("이메일로 가입된 계정이 존재하지 않습니다.");
+		}
 	}
 	
 	@PostMapping("/findPw")

@@ -80,4 +80,12 @@ public class EmailService {
         }
         return str;
     }
+    
+	public void sendEmailId(String username, String email) {
+	        MailDto dto = new MailDto();
+	        dto.setAddress(email);
+	        dto.setTitle("[Quiz App] 회원님의 ID찾기 안내 메일입니다.");
+	        dto.setMessage("안녕하세요. ID찾기 안내 메일 입니다.\n 회원님의 ID는 " + username+" 입니다.\n 감사합니다");
+	        mailSend(dto);
+	}
 }

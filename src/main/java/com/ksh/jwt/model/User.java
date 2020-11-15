@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import lombok.Data;
 @Data
@@ -39,6 +40,10 @@ public class User {
 	private String solved;
 	@Lob
 	private String wrong;
+	
+	@Lob
+	@ColumnDefault("")
+	private String favorite;
 	
 	public List<String> getSolvedList(){
 		if(this.solved.length()>0) {

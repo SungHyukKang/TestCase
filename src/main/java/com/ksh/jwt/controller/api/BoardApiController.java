@@ -44,7 +44,6 @@ public class BoardApiController {
 		Page<Board> board =boardService.list(pageable);
 		List<BoardViewDto> list =new ArrayList<>();
 		for(Board X :board) {
-			
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
