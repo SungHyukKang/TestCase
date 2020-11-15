@@ -1,4 +1,4 @@
-package com.ksh.jwt.dto.user;
+package com.ksh.jwt.dto.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

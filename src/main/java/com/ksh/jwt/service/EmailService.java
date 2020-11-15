@@ -1,5 +1,8 @@
 package com.ksh.jwt.service;
 
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -7,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ksh.jwt.dto.user.MailDto;
+import com.ksh.jwt.dto.email.MailDto;
 import com.ksh.jwt.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ public class EmailService {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
+	@Autowired
     private JavaMailSender mailSender;
     private static final String FROM_ADDRESS = "quizappapiserver@gmail.com";
     
