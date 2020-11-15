@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();//STATELESS -> 세션을 사용하지 않겠다 .
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//STATELESS -> 세션을 사용하지 않겠다 .
 		.and()
 		.addFilter(corsFilter) //@CrossOrigin(인증 X) , 시큐리티 필터에 등록 안됨(인증 O)
 		.formLogin().disable()
