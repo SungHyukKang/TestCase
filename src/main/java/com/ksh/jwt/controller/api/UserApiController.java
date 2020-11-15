@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
@@ -95,6 +96,19 @@ public class UserApiController {
 		user.setWrong("");
 		userRepository.save(user);
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+	}
+	
+	@GetMapping("/join/idCheck")
+	public boolean idCheck(@RequestParam("username") String username) {
+		boolean tf = userService.idCheck(username);
+		return tf;
+	}
+	
+	@PostMapping("/findUsername")
+	public String findUsername(@RequestBody EmailCheckDto emailCheckDto){
+		String username= userService.userEmailCheck(emailCheckDto.getEmail());
+		System.out.println("check완료");
+		return username;
 	}
 	
 	@PostMapping("/findPw")

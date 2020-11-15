@@ -99,6 +99,14 @@ public class UserService {
 		userRepository.save(u);
 	}
 
+	public String userEmailCheck(String email) {
+		User user = userRepository.findByEmail(email);
+		if(user.getUsername()!=null) {
+			return user.getUsername();
+		}
+		return null;
+	}
+	
 	public boolean userEmailCheck(String username, String email) {
 		User user = userRepository.findByEmail(email);
 		System.out.println(user.getEmail());
@@ -111,6 +119,13 @@ public class UserService {
 	public String vsView(String vsUsername) {
 		String result =userRepository.findByUsername(vsUsername).getSolved();
 		return result ;
+	}
+
+	public boolean idCheck(String username) {
+		if(userRepository.findByUsername(username)!=null) {
+			return true;
+		}
+		return false;
 	}
 
 }
