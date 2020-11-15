@@ -13,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
-import lombok.Builder.Default;
 import lombok.Data;
 @Data
 @Entity
@@ -34,9 +31,7 @@ public class User {
 	
 	@Column(nullable=false ,length=150,unique=true)
 	private String email;
-	
-	
-	
+
 	@CreationTimestamp
 	private Timestamp createDate;
 	

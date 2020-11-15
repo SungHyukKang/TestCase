@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
+import com.ksh.jwt.dto.email.EmailCheckDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
 import com.ksh.jwt.dto.user.FindPwDto;
 import com.ksh.jwt.dto.user.MailDto;
@@ -75,9 +76,9 @@ public class UserApiController {
 	}
 	
 	@PostMapping("/join/emailCheck")
-	public Map<String,String> emailCheck(@RequestBody Map<String,String> email){
-		System.out.println(email.get("email"));
-		MailDto dto = emailService.checkEmail(email.get("email"));
+	public Map<String,String> emailCheck(@RequestBody EmailCheckDto email){
+		System.out.println(email.getEmail());
+		MailDto dto = emailService.checkEmail(email.getEmail());
 		emailService.mailSend(dto);
 		Map<String,String> hsmap =new HashMap<>();
 		hsmap.put("authKey",dto.getAuthKey() );
