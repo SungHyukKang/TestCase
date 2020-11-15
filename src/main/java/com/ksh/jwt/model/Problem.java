@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Entity
@@ -33,6 +35,7 @@ public class Problem {
 	
 	@ManyToOne//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId")
+	@JsonBackReference
 	private Board board;
 	
 	@Column(nullable=false)

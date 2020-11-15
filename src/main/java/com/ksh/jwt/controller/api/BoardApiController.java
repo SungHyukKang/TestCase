@@ -1,5 +1,6 @@
 package com.ksh.jwt.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,9 +40,15 @@ public class BoardApiController {
 	}
 	//인덱스 . 모든 글들을 출력 -> 페이징 완료
 	@GetMapping("index")
-	public Page<Board> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public List<BoardViewDto> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);
-		return board;
+		List<BoardViewDto> list =new ArrayList<>();
+		for(Board X :board) {
+			
+			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
+			list.add(bvd);
+		}
+		return list;
 	}
 	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
 	@GetMapping("index/{keyword}")
