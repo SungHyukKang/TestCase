@@ -42,7 +42,7 @@ public class Board {
 	@JsonIgnoreProperties({"board"}) // 무한 참조 방지 
 	private List<Problem> problems;
 	
-	@ManyToOne(fetch=FetchType.EAGER) // N대 1관계 .
+	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.REMOVE) // N대 1관계 .
 	@JoinColumn(name="userId") // User의 PK를 Board의 FK로 정해주는 어노테이션
 	private User user;
 	

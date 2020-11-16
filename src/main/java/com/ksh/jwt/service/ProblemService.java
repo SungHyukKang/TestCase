@@ -13,14 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
+import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
+import com.ksh.jwt.repository.UserRepository;
 
 @Service
 //@RequiredArgsConstructor -> @Authwired 생략 가능 final로 선언
 public class ProblemService {
 	@Autowired
 	private ProblemRepository problemRepository;
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired 
 	private BoardRepository boardRepository;
 	@Transactional

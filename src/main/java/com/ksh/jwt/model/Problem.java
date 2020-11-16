@@ -1,5 +1,6 @@
 package com.ksh.jwt.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,7 +34,7 @@ public class Problem {
 //	@Column(nullable=false)
 //	private String num5;
 	
-	@ManyToOne//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
+	@ManyToOne(cascade = CascadeType.REMOVE)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId")
 	@JsonBackReference
 	private Board board;
@@ -46,6 +47,4 @@ public class Problem {
 		return "Problem [id=" + id + ", title=" + title + ", num1=" + num1 + ", num2=" + num2 + ", num3=" + num3
 				+ ", num4=" + num4 + ", board=" + board + ", answer=" + answer + "]";
 	}
-	
-	
 }

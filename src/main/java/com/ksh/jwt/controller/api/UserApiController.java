@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +52,6 @@ public class UserApiController {
 		}
 	}
 	
-	
-	
 	@PostMapping("solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
 		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
@@ -61,6 +60,16 @@ public class UserApiController {
 		userService.solvedCheck(solved.getProblemId(),solved.getSolvedStatus(),principal.getUser().getId());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+	
+	@DeleteMapping("/userDelete")
+	public ResponseDto<String> userDelete(@AuthenticationPrincipal PrincipalDetails principal,@RequestBody Map<String,String> map){
+		System.out.println("PWPWPWPWPW"+map.get("pw"));
+		if(bCryptPasswordEncoder.matches(map.get("pw"),principal.getPassword())) {
+			userService.deleteInfo(principal.getUser().getId());
+		}
+		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+	}
+	
 	
 	@GetMapping("/favoriteList")
 	public List<BoardViewDto> favoriteList(@AuthenticationPrincipal PrincipalDetails principal){

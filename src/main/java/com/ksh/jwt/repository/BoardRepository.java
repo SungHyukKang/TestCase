@@ -13,6 +13,7 @@ import com.ksh.jwt.model.Board;
 public interface BoardRepository extends JpaRepository<Board, Integer>{
 	List<Board> findByTitleContainingOrderById(String keyword ,Pageable pageable );
 	List<Board> findByUserId(int userId,Pageable pageable);
+	List<Board> findByUserId(int userId);
 	@Modifying
 	@Query(value = "UPDATE Board SET count = count+1 WHERE id =?1",nativeQuery = true)
 	int counter(int boardId);
