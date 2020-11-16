@@ -23,7 +23,7 @@
 
 ## 전체 시스템 구조도
 
-![image-20201116153910384](C:\Users\95lin\AppData\Roaming\Typora\typora-user-images\image-20201116153910384.png)
+![image-20201116153910384]https://user-images.githubusercontent.com/50865982/99224982-a2343500-282a-11eb-9eb2-69dfadd54366.png
 
 
 
