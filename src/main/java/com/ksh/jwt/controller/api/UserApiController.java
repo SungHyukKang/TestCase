@@ -1,7 +1,6 @@
 package com.ksh.jwt.controller.api;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,6 +42,23 @@ public class UserApiController {
 	private final UserService userService;
 	private final EmailService emailService;
 	
+	
+	@PostMapping("/enteredPw")
+	public ResponseDto<Boolean> enteredPw(@RequestBody Map<String,String> map ,@AuthenticationPrincipal PrincipalDetails principal) {
+		String entered= bCryptPasswordEncoder.encode(map.get("pw"));
+		User u = userRepository.findById(principal.getUser().getId()).orElseThrow(()->{
+			throw new IllegalArgumentException("없는 사용자");
+		});
+		System.out.println(entered);
+		if(bCryptPasswordEncoder.matches(map.get("pw"), u.getPassword())) {
+			return new ResponseDto<Boolean>(HttpStatus.OK.value(),true);
+		}else {
+			return new ResponseDto<Boolean>(HttpStatus.OK.value(),false);
+		}
+	}
+	
+	
+	
 	@PostMapping("solvedCheck")
 	public ResponseDto<String> solvedCheck(@RequestBody SolvedDto solved,@AuthenticationPrincipal PrincipalDetails principal){
 		problemRepository.findById(solved.getProblemId()).orElseThrow(()->{
@@ -70,10 +86,8 @@ public class UserApiController {
 	
 	//회원가입.
 	@PutMapping("update")
-	public ResponseDto<String> update(@RequestBody UpdateUserDto updateUser,@AuthenticationPrincipal PrincipalDetails principal) {
-		System.out.println(updateUser.getNPassword());
-		System.out.println(updateUser);
-		userService.update(updateUser,principal.getUser());
+	public ResponseDto<String> update(@RequestBody Map<String,String> map ,@AuthenticationPrincipal PrincipalDetails principal) {
+		userService.update(map.get("newPassword"),principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 	

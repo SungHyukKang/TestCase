@@ -3,7 +3,6 @@ package com.ksh.jwt.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,24 +30,13 @@ public class UserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Transactional
-	public void update(UpdateUserDto updateUser, User user) {
+	public void update(String newPassword, User user) {
 		User u = userRepository.findById(user.getId()).orElseThrow(() -> {
 			return new IllegalArgumentException("아이디를 찾을 수 없습니다.");
 		});
-		if (updateUser.getPassword() != null
-				&& bCryptPasswordEncoder.matches(updateUser.getPassword(), u.getPassword())) {
-			if (updateUser.getNPassword().equals(updateUser.getNPassword2())) {
-				String newPw = bCryptPasswordEncoder.encode(updateUser.getNPassword());
-				u.setPassword(newPw);
-				userRepository.save(u);
-			} else {
-				throw new IllegalArgumentException("변경할 비밀번호가 서로 다릅니다");
-			}
-		} else {
-			throw new IllegalArgumentException("현재 패스워드가 다릅니다");
-		}
+		u.setPassword(bCryptPasswordEncoder.encode(newPassword));
 	}
-
+		
 	@Transactional
 	public void solvedCheck(int problemId, int solvedStatus, int userId) {
 		User u = userRepository.findById(userId).orElseThrow(() -> {
@@ -130,7 +118,7 @@ public class UserService {
 	}
 	
 	
-	
+	@Transactional
 	public void addFavorite(int userId, int boardId) {
 		User u = userRepository.findById(userId).orElseThrow(()->{
 			return new IllegalArgumentException("아이디가 존재하지 않습니다.");

@@ -28,6 +28,8 @@ public class ProblemService {
 		Board board =boardRepository.findById(boardId).get();
 		if(username.equals(board.getUser().getUsername())){
 			for(Problem p : problems) {
+			if(p.getTitle()==null||p.getTitle().equals(""))
+				continue;
 			System.out.println(p.toString());
 			String title =p.getTitle();
 			String num1 =p.getNum1();
@@ -51,8 +53,6 @@ public class ProblemService {
 		return problem;
 	}
 	
-	
-	
 	@Transactional(readOnly = true)
 	public HashMap<Integer,List<MySolvedDto>> mySolved(List<String> solvedList) {
 		Collections.sort(solvedList);
@@ -70,5 +70,14 @@ public class ProblemService {
 		}
 		return hsmap;
 	}
-
+	
+	@Transactional
+	public void delete(String username, int problemId) {
+		int boardId = problemRepository.findById(problemId).get().getBoard().getId();
+		System.out.println(boardRepository.findById(boardId).get().getUser().getUsername());
+		if(!boardRepository.findById(boardId).get().getUser().getUsername().equals(username)) {
+			throw new IllegalArgumentException("문제 작성자가 아닙니다.");
+		}
+		problemRepository.deleteById(problemId);
+	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ksh.jwt.dto.board.BoardViewDto;
+import com.ksh.jwt.dto.board.UpdateBoardDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
@@ -51,6 +52,20 @@ public class BoardService {
 	public List<Board> myBoard(int userId, Pageable pageable) {
 		List<Board> mb=boardRepository.findByUserId(userId,pageable);
 		return mb;
+	}
+	@Transactional
+	public void updateBoard(int id, int boardId, Board ubd) {
+		Board board =boardRepository.findById(boardId).orElseThrow(()->{
+			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+		});
+		if(board.getUser().getId()!=id) {
+			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
+		}else {
+			board.setContent(ubd.getContent());
+			board.setTitle(ubd.getContent());
+			board.setImage(ubd.getImage());
+			board.setProblems(ubd.getProblems());
+		}
 	}
 	@Transactional
 	public void deleteBoard(int id, int boardId) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,7 @@ import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.dto.problem.SolvedResponseDto;
-import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.model.Problem;
-import com.ksh.jwt.model.User;
 import com.ksh.jwt.service.ProblemService;
 
 @RestController
@@ -51,6 +50,12 @@ public class ProblemApiController {
 	public ResponseDto<String> write(@PathVariable int id, @RequestBody Problem[] problems,
 			@AuthenticationPrincipal PrincipalDetails principal) {
 		problemService.write(id, problems, principal.getUser().getUsername());
+		return new ResponseDto<String>(HttpStatus.OK.value(), "1");
+	}
+	@DeleteMapping("/problemDelete/{problemId}")
+	public ResponseDto<String> delete(@AuthenticationPrincipal PrincipalDetails principal ,@PathVariable int problemId) {
+		
+		problemService.delete(principal.getUser().getUsername(),problemId);
 		return new ResponseDto<String>(HttpStatus.OK.value(), "1");
 	}
 

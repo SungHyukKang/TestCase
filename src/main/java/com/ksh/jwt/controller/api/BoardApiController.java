@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
-import com.ksh.jwt.model.User;
-import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.service.BoardService;
 
 @RestController
@@ -68,6 +67,12 @@ public class BoardApiController {
 		int userId = principal.getUser().getId();
 		List<Board> mb = boardService.myBoard(userId,pageable);
 		return mb;
+	}
+	//제목 , 내용 , 문제 변경 .또 할게있나?image 변경/추가 , createDate 최신화?
+	@PutMapping("board/update/{boardId}")
+	public ResponseDto<String> updateBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId,@RequestBody Board board){
+		boardService.updateBoard(principal.getUser().getId(),boardId,board);
+		return new ResponseDto<>(HttpStatus.OK.value(),"1");
 	}
 	
 	@DeleteMapping("board/delete/{boardId}")
