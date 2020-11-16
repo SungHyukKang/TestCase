@@ -169,9 +169,7 @@ public class UserService {
 	
 	@Transactional
 	public void deleteInfo(int id) {
-		User user = userRepository.findById(id).orElseThrow(()->{
-			 throw new IllegalArgumentException("유저가 존재하지 않습니다.");
-		});
+		
 		HashMap<Integer,Boolean> hsmap =new HashMap<>();
 		List<Board> boards= boardRepository.findByUserId(id);
 		
@@ -185,7 +183,7 @@ public class UserService {
 		for(User u : users) {
 			if(u==null)
 				continue;
-			if(u.getId()==user.getId())
+			if(u.getId()==id)
 				continue;
 			String sol = u.getSolved();
 			String wro = u.getWrong();
@@ -206,6 +204,8 @@ public class UserService {
 			u.setFavorite(fav);
 			u.setWrong(wro);
 		}
-		userRepository.delete(user);
+		userRepository.delete(userRepository.findById(id).orElseThrow(()->{
+			return new IllegalArgumentException("이미 탈퇴한 회원입니다.");
+		}));
 	}
 }
