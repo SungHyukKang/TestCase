@@ -24,7 +24,6 @@ import com.ksh.jwt.dto.email.MailDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
 import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.dto.user.FindPwDto;
-import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.ProblemRepository;
 import com.ksh.jwt.repository.UserRepository;
