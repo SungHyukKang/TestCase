@@ -44,11 +44,9 @@ public class UserApiController {
 	
 	@PostMapping("/enteredPw")
 	public ResponseDto<Boolean> enteredPw(@RequestBody Map<String,String> map ,@AuthenticationPrincipal PrincipalDetails principal) {
-		String entered= bCryptPasswordEncoder.encode(map.get("pw"));
 		User u = userRepository.findById(principal.getUser().getId()).orElseThrow(()->{
 			throw new IllegalArgumentException("없는 사용자");
 		});
-		System.out.println(entered);
 		if(bCryptPasswordEncoder.matches(map.get("pw"), u.getPassword())) {
 			return new ResponseDto<Boolean>(HttpStatus.OK.value(),true);
 		}else {
