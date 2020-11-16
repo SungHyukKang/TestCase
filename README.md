@@ -16,7 +16,7 @@
 
 - SpringBoot + JPA + MySQL + Maven 을 이용한 프로젝트입니다.
 - JWT 엑세스 토큰을 이용하여 로그인을 처리하였습니다.
-- 순환 참조 방지를 위하여 @JsonIgnoreProperties, @JsonBackReference를 사용하였습니다.
+- 게시글에서 문제를 불러올 때, 순환 참조 방지를 위하여 @JsonIgnoreProperties, @JsonBackReference 어노테이션을 사용하였습니다.
 - Swaager를 이용하여 RESTful API를 문서화하였습니다.
 - Spring Security를 이용하여 사용자의 권한에 따라 접근 가능한 페이지를 나누었습니다.
 - DB와 OOP의 불일치성을 해결하기 위하여 JPA를 사용하였습니다.
