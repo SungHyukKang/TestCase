@@ -66,6 +66,7 @@ public class UserApiController {
 		System.out.println("PWPWPWPWPW"+map.get("pw"));
 		if(bCryptPasswordEncoder.matches(map.get("pw"),principal.getPassword())) {
 			userService.deleteInfo(principal.getUser().getId());
+			userRepository.delete(principal.getUser());
 		}
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}

@@ -169,10 +169,8 @@ public class UserService {
 	
 	@Transactional
 	public void deleteInfo(int id) {
-		
 		HashMap<Integer,Boolean> hsmap =new HashMap<>();
 		List<Board> boards= boardRepository.findByUserId(id);
-		
 		List<User> users = userRepository.findAll();
 		for(Board b : boards) {
 			for(Problem p : b.getProblems()) {
@@ -204,8 +202,6 @@ public class UserService {
 			u.setFavorite(fav);
 			u.setWrong(wro);
 		}
-		userRepository.delete(userRepository.findById(id).orElseThrow(()->{
-			return new IllegalArgumentException("이미 탈퇴한 회원입니다.");
-		}));
+		
 	}
 }
