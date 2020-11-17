@@ -47,9 +47,9 @@ public class ProblemApiController {
 	
 	// 글 작성 후 문제를 작성.
 	@PostMapping("board/{id}/write")
-	public ResponseDto<String> write(@PathVariable int id, @RequestBody Problem[] problems,
+	public ResponseDto<String> write(@PathVariable int id, @RequestBody Map<String,Problem[]> map,
 			@AuthenticationPrincipal PrincipalDetails principal) {
-		problemService.write(id, problems, principal.getUser().getUsername());
+		problemService.write(id,map.get("contents"), principal.getUser().getUsername());
 		return new ResponseDto<String>(HttpStatus.OK.value(), "1");
 	}
 	
