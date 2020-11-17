@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
+import com.ksh.jwt.dto.board.BoardPagingViewDto;
 import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
@@ -34,26 +36,39 @@ public class BoardApiController {
 	@PostMapping("/board/save")
 	public ResponseDto<String> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
 		board.setCount(0);
+		board.setUsername(principal.getUsername());
 		boardService.save(board,principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+	
 	//인덱스 . 모든 글들을 출력 -> 페이징 완료
 	@GetMapping("index")
-	public List<BoardViewDto> boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	public BoardPagingViewDto boardList(@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		Page<Board> board =boardService.list(pageable);
+		
 		List<BoardViewDto> list =new ArrayList<>();
 		for(Board X :board) {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		return list;
+		
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,board.getTotalPages(),list.size());
+		return bpvd;
 	}
+	
 	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
-	@GetMapping("index/{keyword}")
-	public List<Board> boardSearch(@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
-		List<Board> board =boardService.search(pageable,keyword);
-		return board;
+	@GetMapping("search/{keyword}")//  http://13.124.124.97:8001/search/{keyword}?type=title or username
+	public BoardPagingViewDto boardSearch(@RequestParam String type,@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+		List<Board> board =boardService.search(pageable,keyword,type);
+		List<BoardViewDto> list =new ArrayList<>();
+		for(Board X :board) {
+			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
+			list.add(bvd);
+		}
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,board.getTotalPages(),list.size());
+		return bpvd;
 	}
+	
 	// 글 상세보기 .
 	@GetMapping("board/{id}")
 	public BoardViewDto view(@PathVariable int id ){

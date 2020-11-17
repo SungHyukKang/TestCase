@@ -63,13 +63,14 @@ public class UserApiController {
 	
 	@DeleteMapping("/userDelete")
 	public ResponseDto<String> userDelete(@AuthenticationPrincipal PrincipalDetails principal,@RequestBody Map<String,String> map){
-		System.out.println("PWPWPWPWPW"+map.get("pw"));
 		if(bCryptPasswordEncoder.matches(map.get("pw"),principal.getPassword())) {
 			userService.deleteInfo(principal.getUser().getId());
 			userRepository.delete(principal.getUser());
 		}
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+
+	
 	
 	
 	@GetMapping("/favoriteList")
@@ -77,7 +78,6 @@ public class UserApiController {
 		List<BoardViewDto> list= userService.favoriteList(principal.getUser().getFavoriteList());
 		return list;
 	}
-	
 	
 	@GetMapping("/favorite/{boardId}")
 	public ResponseDto<String> addFavorite(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId){
@@ -94,6 +94,7 @@ public class UserApiController {
 		userService.update(map.get("newPassword"),principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
+
 	
 	@GetMapping("vs/{vsUsername}")
 	public VsDto vsView(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable String vsUsername) {

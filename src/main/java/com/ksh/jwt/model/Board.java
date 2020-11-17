@@ -46,6 +46,8 @@ public class Board {
 	@JoinColumn(name="userId") // User의 PK를 Board의 FK로 정해주는 어노테이션
 	private User user;
 	
+	private String username;
+	
 	@CreationTimestamp//createDate 자동 입력 now();
 	private Timestamp createDate;
 }

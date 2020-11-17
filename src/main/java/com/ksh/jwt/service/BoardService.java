@@ -1,6 +1,6 @@
 package com.ksh.jwt.service;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,67 +14,81 @@ import com.ksh.jwt.dto.board.UpdateBoardDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
+import com.ksh.jwt.repository.UserRepository;
 
 @Service
 public class BoardService {
-	
+
 	@Autowired
 	private BoardRepository boardRepository;
-	
+	@Autowired
+	private UserRepository userRepository;
+
 	@Transactional
-	public void save(Board board , User user) {
+	public void save(Board board, User user) {
 		board.setUser(user);
 		boardRepository.save(board);
 	}
-	
-	@Transactional(readOnly =true)
+
+	@Transactional(readOnly = true)
 	public Page<Board> list(Pageable pageable) {
 		return boardRepository.findAll(pageable);
 	}
-	
+
 	@Transactional
 	public BoardViewDto view(int id) {
-		Board board = boardRepository.findById(id).orElseThrow(()->{
+		Board board = boardRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("글을 읽어올 수 없습니다.");
 		});
 		boardRepository.counter(id);
-		BoardViewDto bvd = new BoardViewDto(board.getId(), board.getTitle(), board.getContent(), board.getImage(), board.getCount(), board.getProblems(), board.getUser().getId(),board.getUser().getUsername(), board.getCreateDate());
+		BoardViewDto bvd = new BoardViewDto(board.getId(), board.getTitle(), board.getContent(), board.getImage(),
+				board.getCount(), board.getProblems(), board.getUser().getId(), board.getUser().getUsername(),
+				board.getCreateDate());
 		return bvd;
 	}
-	
+
 	@Transactional(readOnly=true)
-	public List<Board> search(Pageable pageable,String keyword) {
-		List<Board> list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
-		return list;
+	public List<Board> search(Pageable pageable,String keyword,String type) {
+		List<Board> list;
+		if(type.equals("title")) {
+			list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
+			return list;
+		}
+		else {
+			list = boardRepository.findByUsernameContainingOrderById(keyword, pageable);
+			return list;
+		}
 	}
-	
-	@Transactional(readOnly=true)
+
+	@Transactional(readOnly = true)
 	public List<Board> myBoard(int userId, Pageable pageable) {
-		List<Board> mb=boardRepository.findByUserId(userId,pageable);
+		List<Board> mb = boardRepository.findByUserId(userId, pageable);
 		return mb;
 	}
+
 	@Transactional
 	public void updateBoard(int id, int boardId, Board ubd) {
-		Board board =boardRepository.findById(boardId).orElseThrow(()->{
+		Board board = boardRepository.findById(boardId).orElseThrow(() -> {
 			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
 		});
-		if(board.getUser().getId()!=id) {
+		if (board.getUser().getId() != id) {
 			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
-		}else {
+		} else {
 			board.setContent(ubd.getContent());
 			board.setTitle(ubd.getContent());
 			board.setImage(ubd.getImage());
 			board.setProblems(ubd.getProblems());
 		}
 	}
+
 	@Transactional
 	public void deleteBoard(int id, int boardId) {
-		Board board =boardRepository.findById(boardId).orElseThrow(()->{
+		Board board = boardRepository.findById(boardId).orElseThrow(() -> {
 			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
 		});
-		if(board.getUser().getId()!=id) {
+		if (board.getUser().getId() != id) {
 			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
-		}else {
+		} else {
 			boardRepository.deleteById(boardId);
 		}
 	}
