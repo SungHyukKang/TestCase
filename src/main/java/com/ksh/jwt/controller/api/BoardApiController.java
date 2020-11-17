@@ -65,7 +65,8 @@ public class BoardApiController {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,board.getTotalPages(),list.size());
+		
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,0,list.size());
 		return bpvd;
 	}
 	
