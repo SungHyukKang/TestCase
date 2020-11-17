@@ -22,6 +22,7 @@ import com.ksh.jwt.dto.board.BoardPagingViewDto;
 import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
+import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.service.BoardService;
 
 @RestController
@@ -31,14 +32,17 @@ public class BoardApiController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Autowired
+	private BoardRepository boardRepository;
+	
 	//글쓰기  ,  
 	//문제를 내기 위해서는 먼저 글 작성 후 문제를 작성하는식.
 	@PostMapping("/board/save")
-	public ResponseDto<String> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
+	public ResponseDto<Integer> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
 		board.setCount(0);
 		board.setUsername(principal.getUsername());
 		boardService.save(board,principal.getUser());
-		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
+		return new ResponseDto<Integer>(HttpStatus.OK.value(),board.getId());
 	}
 	
 	//인덱스 . 모든 글들을 출력 -> 페이징 완료
@@ -56,17 +60,22 @@ public class BoardApiController {
 		return bpvd;
 	}
 	
-	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료
-	@GetMapping("search/{keyword}")//  http://13.124.124.97:8001/search/{keyword}?type=title or username
-	public BoardPagingViewDto boardSearch(@RequestParam String type,@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
+	//검색기능 -> 페이징 아직 안됨 -> 페이징 완료//title , username
+	@GetMapping("search/{keyword}/{type}")//  http://13.124.124.97:8001/search/{keyword}?type=title or username
+	public BoardPagingViewDto boardSearch(@PathVariable String type,@PathVariable String keyword,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
 		List<Board> board =boardService.search(pageable,keyword,type);
+		int pageSize=0;
+		if(type.equals("title")) {
+			pageSize=boardRepository.findByTitle(keyword).size()/10+1;
+		}else {
+			pageSize=boardRepository.findByUsername(keyword).size()/10+1;
+		}
 		List<BoardViewDto> list =new ArrayList<>();
 		for(Board X :board) {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		
-		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,0,list.size());
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,pageSize,list.size());
 		return bpvd;
 	}
 	

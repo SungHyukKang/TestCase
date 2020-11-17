@@ -52,6 +52,7 @@ public class ProblemApiController {
 		problemService.write(id, problems, principal.getUser().getUsername());
 		return new ResponseDto<String>(HttpStatus.OK.value(), "1");
 	}
+	
 	@DeleteMapping("/problemDelete/{problemId}")
 	public ResponseDto<String> delete(@AuthenticationPrincipal PrincipalDetails principal ,@PathVariable int problemId) {
 		

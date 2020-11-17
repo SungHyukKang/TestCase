@@ -1,6 +1,5 @@
 package com.ksh.jwt.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ksh.jwt.dto.board.BoardViewDto;
-import com.ksh.jwt.dto.board.UpdateBoardDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
-import com.ksh.jwt.repository.UserRepository;
 
 @Service
 public class BoardService {
 
 	@Autowired
 	private BoardRepository boardRepository;
-	@Autowired
-	private UserRepository userRepository;
 
 	@Transactional
 	public void save(Board board, User user) {
 		board.setUser(user);
+		
 		boardRepository.save(board);
 	}
 
@@ -52,10 +48,12 @@ public class BoardService {
 		List<Board> list;
 		if(type.equals("title")) {
 			list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
+			System.out.println(list);
 			return list;
 		}
 		else {
 			list = boardRepository.findByUsernameContainingOrderById(keyword, pageable);
+			System.out.println(list);
 			return list;
 		}
 	}
