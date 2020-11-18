@@ -165,7 +165,6 @@ public class UserService {
 		}
 		return arrlist;
 	}
-	
 	@Transactional
 	public void deleteInfo(int id) {
 		HashMap<Integer,Boolean> hsmap =new HashMap<>();
@@ -201,6 +200,5 @@ public class UserService {
 			u.setFavorite(fav);
 			u.setWrong(wro);
 		}
-		
 	}
 }

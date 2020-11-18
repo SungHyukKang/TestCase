@@ -69,9 +69,6 @@ public class UserApiController {
 		}
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
-
-	
-	
 	
 	@GetMapping("/favoriteList")
 	public List<BoardViewDto> favoriteList(@AuthenticationPrincipal PrincipalDetails principal){
