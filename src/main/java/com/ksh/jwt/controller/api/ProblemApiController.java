@@ -45,11 +45,17 @@ public class ProblemApiController {
 		return hsmap;
 	}
 	
+	
 	// 글 작성 후 문제를 작성.
 	@PostMapping("board/{id}/write")
-	public ResponseDto<String> write(@PathVariable int id, @RequestBody Map<String,Problem[]> map,
+	public ResponseDto<String> write(@PathVariable int id, @RequestBody Map<String,List<Problem>> map,
 			@AuthenticationPrincipal PrincipalDetails principal) {
-		problemService.write(id,map.get("contents"), principal.getUser().getUsername());
+		String key=null;
+		for(String X : map.keySet())
+			key=X;
+		
+		System.out.println(map.get(key).toString());
+		problemService.write(id,map.get(key), principal.getUser().getUsername());
 		return new ResponseDto<String>(HttpStatus.OK.value(), "1");
 	}
 	

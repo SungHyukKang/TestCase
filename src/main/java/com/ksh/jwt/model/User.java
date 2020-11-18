@@ -42,7 +42,6 @@ public class User {
 	private String wrong;
 	
 	@Lob
-	@ColumnDefault("")
 	private String favorite;
 	
 	public List<String> getFavoriteList(){

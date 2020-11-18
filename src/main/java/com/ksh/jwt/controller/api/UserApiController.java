@@ -133,6 +133,7 @@ public class UserApiController {
 		user.setRoles("ROLE_USER");//해당 유저의 권한
 		user.setSolved("");
 		user.setWrong("");
+		user.setFavorite("");
 		userRepository.save(user);
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}

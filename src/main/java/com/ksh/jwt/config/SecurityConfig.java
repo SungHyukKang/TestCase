@@ -2,8 +2,7 @@ package com.ksh.jwt.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private final UserRepository userRepository;
 	private final CorsFilter corsFilter;
+	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {

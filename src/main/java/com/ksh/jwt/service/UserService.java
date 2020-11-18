@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ksh.jwt.dto.board.BoardViewDto;
-import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
 import com.ksh.jwt.model.User;

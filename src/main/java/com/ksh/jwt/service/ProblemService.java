@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,22 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
-import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
-import com.ksh.jwt.repository.UserRepository;
 
 @Service
 //@RequiredArgsConstructor -> @Authwired 생략 가능 final로 선언
 public class ProblemService {
 	@Autowired
 	private ProblemRepository problemRepository;
-	@Autowired
-	private UserRepository userRepository;
 	@Autowired 
 	private BoardRepository boardRepository;
 	@Transactional
-	public void write(int boardId,Problem[] problems,String username) {
+	public void write(int boardId,List<Problem> problems,String username) {
 		Board board =boardRepository.findById(boardId).get();
 		if(username.equals(board.getUser().getUsername())){
 			for(Problem p : problems) {
