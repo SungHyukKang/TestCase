@@ -48,7 +48,7 @@ public class UserApiController {
 		if(bCryptPasswordEncoder.matches(map.get("pw"), principal.getPassword())) {
 			return new ResponseDto<Boolean>(HttpStatus.OK.value(),true);
 		}else {
-			return new ResponseDto<Boolean>(HttpStatus.OK.value(),false);
+			return new ResponseDto<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR.value(),false);
 		}
 	}
 	
