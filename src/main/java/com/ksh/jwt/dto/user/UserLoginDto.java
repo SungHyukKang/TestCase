@@ -1,13 +1,15 @@
 package com.ksh.jwt.dto.user;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUserDto {
+@NoArgsConstructor
+@Builder
+@Data
+public class UserLoginDto {
 	private String username;
-	private String nPassword;
+	private String password;
 }

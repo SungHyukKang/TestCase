@@ -25,6 +25,7 @@ import com.ksh.jwt.dto.email.MailDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
 import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.dto.user.FindPwDto;
+import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.ProblemRepository;
 import com.ksh.jwt.repository.UserRepository;
@@ -44,8 +45,8 @@ public class UserApiController {
 	
 	
 	@PostMapping("/enteredPw")
-	public ResponseDto<Boolean> enteredPw(@RequestBody Map<String,String> map ,@AuthenticationPrincipal PrincipalDetails principal) {
-		if(bCryptPasswordEncoder.matches(map.get("pw"), principal.getPassword())) {
+	public ResponseDto<Boolean> enteredPw(@RequestBody User user,@AuthenticationPrincipal PrincipalDetails principal) {
+		if(bCryptPasswordEncoder.matches(user.getPassword(), principal.getPassword())) {
 			return new ResponseDto<Boolean>(HttpStatus.OK.value(),true);
 		}else {
 			return new ResponseDto<Boolean>(HttpStatus.INTERNAL_SERVER_ERROR.value(),false);
@@ -62,8 +63,8 @@ public class UserApiController {
 	}
 	
 	@DeleteMapping("/userDelete")
-	public ResponseDto<String> userDelete(@AuthenticationPrincipal PrincipalDetails principal,@RequestBody Map<String,String> map){
-		if(bCryptPasswordEncoder.matches(map.get("pw"),principal.getPassword())) {
+	public ResponseDto<String> userDelete(@AuthenticationPrincipal PrincipalDetails principal,@RequestBody User user){
+		if(bCryptPasswordEncoder.matches(user.getPassword(),principal.getPassword())) {
 			userService.deleteInfo(principal.getUser().getId());
 			userRepository.delete(principal.getUser());
 		}
@@ -87,8 +88,8 @@ public class UserApiController {
 	
 	//회원가입.
 	@PutMapping("update")
-	public ResponseDto<String> update(@RequestBody Map<String,String> map ,@AuthenticationPrincipal PrincipalDetails principal) {
-		userService.update(map.get("newPassword"),principal.getUser());
+	public ResponseDto<String> update(@RequestBody UpdateUserDto user,@AuthenticationPrincipal PrincipalDetails principal) {
+		userService.update(user.getNPassword(),principal.getUser());
 		return new ResponseDto<String>(HttpStatus.OK.value(),"1");
 	}
 

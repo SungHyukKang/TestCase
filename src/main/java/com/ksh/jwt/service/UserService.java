@@ -132,13 +132,11 @@ public class UserService {
 			if(boardId==Integer.parseInt(X)) {
 				fa =replacePerfect(fa,X);
 				u.setFavorite(fa);
-				userRepository.save(u);
 				return ;
 			}
 		}
 		fa=fa+" "+String.valueOf(boardId);
 		u.setFavorite(fa.trim());
-		userRepository.save(u);
 	}
 	
 	public  String replacePerfect(String str,String change) {

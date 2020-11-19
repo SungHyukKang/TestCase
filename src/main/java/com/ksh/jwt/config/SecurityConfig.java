@@ -50,7 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//STATELESS -> 세션을 사용하지 않겠다 .
 		.and()
 		.addFilter(corsFilter) //@CrossOrigin(인증 X) , 시큐리티 필터에 등록 안됨(인증 O)
-		.formLogin().disable()
+		.formLogin()
+		.defaultSuccessUrl("/admin")
+		.and()
 		.httpBasic().disable()
 		.addFilter(new JwtAuthenticationFilter(authenticationManager())) //AuthenticationManager
 		.addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository)) //AuthenticationManager
@@ -60,13 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 		.antMatchers("/api/v1/manager/**")
 			.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-		.antMatchers("/api/v1/admin/**")
-			.access("hasRole('ROLE_ADMIN')")
 //		.antMatchers("/**")
 //			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 			.antMatchers("/board/**")
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+			
 			.anyRequest().permitAll();
+		
 			;
 		
 	}
