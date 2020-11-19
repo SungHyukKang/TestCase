@@ -56,8 +56,7 @@ public class BoardApiController {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		
-		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,board.getTotalPages(),list.size());
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,board.getTotalPages(),list.size(),board.getTotalElements());
 		return bpvd;
 	}
 	
@@ -67,9 +66,9 @@ public class BoardApiController {
 		List<Board> board =boardService.search(pageable,keyword,type);
 		int pageSize=0;
 		if(type.equals("title")) {
-			pageSize=boardRepository.findByTitle(keyword).size()/10+1;
+			pageSize=boardRepository.findByTitle(keyword).size();
 		}else {
-			pageSize=boardRepository.findByUsername(keyword).size()/10+1;
+			pageSize=boardRepository.findByUsername(keyword).size();
 		}
 		List<BoardViewDto> list =new ArrayList<>();
 		for(Board X :board) {
@@ -79,7 +78,7 @@ public class BoardApiController {
 		if(pageSize==1&&list.size()==0)
 			pageSize=0;
 		
-		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,pageSize,list.size());
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,pageSize/10+1,list.size(),pageSize);
 		return bpvd;
 	}
 	

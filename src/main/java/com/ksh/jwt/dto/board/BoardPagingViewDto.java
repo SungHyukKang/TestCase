@@ -19,4 +19,5 @@ public class BoardPagingViewDto {
 	private Pageable paging;
 	private int totalPages;
 	private long elementSizes;
+	private long totalElements;
 }
