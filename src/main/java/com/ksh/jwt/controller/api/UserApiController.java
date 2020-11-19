@@ -24,6 +24,7 @@ import com.ksh.jwt.dto.email.EmailCheckDto;
 import com.ksh.jwt.dto.email.MailDto;
 import com.ksh.jwt.dto.problem.SolvedDto;
 import com.ksh.jwt.dto.problem.VsDto;
+import com.ksh.jwt.dto.user.EnteredPwDto;
 import com.ksh.jwt.dto.user.FindPwDto;
 import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
@@ -45,7 +46,9 @@ public class UserApiController {
 	
 	
 	@PostMapping("/enteredPw")
-	public ResponseDto<Boolean> enteredPw(@RequestBody User user,@AuthenticationPrincipal PrincipalDetails principal) {
+	public ResponseDto<Boolean> enteredPw(@RequestBody EnteredPwDto user,@AuthenticationPrincipal PrincipalDetails principal) {
+		
+		
 		if(bCryptPasswordEncoder.matches(user.getPassword(), principal.getPassword())) {
 			return new ResponseDto<Boolean>(HttpStatus.OK.value(),true);
 		}else {
