@@ -17,12 +17,15 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString
 public class Board {
 	@Id // 해당 테이블의 PK
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //시퀀스 AUTO_INCREMENT 
@@ -42,7 +45,7 @@ public class Board {
 	@JsonIgnoreProperties({"board"}) // 무한 참조 방지 
 	private List<Problem> problems;
 	
-	@ManyToOne(fetch=FetchType.EAGER,cascade = CascadeType.REMOVE) // N대 1관계 .
+	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.REMOVE) // N대 1관계 .
 	@JoinColumn(name="userId") // User의 PK를 Board의 FK로 정해주는 어노테이션
 	private User user;
 	
@@ -50,4 +53,10 @@ public class Board {
 	
 	@CreationTimestamp//createDate 자동 입력 now();
 	private Timestamp createDate;
+
+	@Override
+	public String toString() {
+		return "Board [id=" + id + ", title=" + title + ", content=" + content + ", image=" + image + ", count=" + count
+				+ ", user=" + user + ", username=" + username + ", createDate=" + createDate + "]";
+	}
 }

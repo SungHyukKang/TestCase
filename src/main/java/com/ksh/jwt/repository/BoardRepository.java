@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.ksh.jwt.model.Board;
 //Repository는 JPA에서 쿼리문을 사용하는 곳? DB와 소통창구 
 public interface BoardRepository extends JpaRepository<Board, Integer>{
-	List<Board> findByTitleContainingOrderById(String keyword ,Pageable pageable );
-	List<Board> findByUsernameContainingOrderById(String keyword ,Pageable pageable );
+	List<Board> findByTitleContaining(String keyword ,Pageable pageable );
+	List<Board> findByUsernameContaining(String keyword ,Pageable pageable );
 	
 	List<Board> findByUserId(int userId,Pageable pageable);
 	List<Board> findByUserId(int userId);

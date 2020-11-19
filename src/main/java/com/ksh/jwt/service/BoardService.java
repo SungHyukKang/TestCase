@@ -47,12 +47,12 @@ public class BoardService {
 	public List<Board> search(Pageable pageable,String keyword,String type) {
 		List<Board> list;
 		if(type.equals("title")) {
-			list = boardRepository.findByTitleContainingOrderById(keyword,pageable);
+			list = boardRepository.findByTitleContaining(keyword,pageable);
 			System.out.println(list);
 			return list;
 		}
 		else {
-			list = boardRepository.findByUsernameContainingOrderById(keyword, pageable);
+			list = boardRepository.findByUsernameContaining(keyword, pageable);
 			System.out.println(list);
 			return list;
 		}

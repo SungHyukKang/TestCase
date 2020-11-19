@@ -3,6 +3,7 @@ package com.ksh.jwt.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,10 +12,15 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Problem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +40,7 @@ public class Problem {
 //	@Column(nullable=false)
 //	private String num5;
 	
-	@ManyToOne(cascade = CascadeType.REMOVE)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
+	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.REMOVE)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId")
 	@JsonBackReference
 	private Board board;
@@ -45,6 +51,8 @@ public class Problem {
 	@Override
 	public String toString() {
 		return "Problem [id=" + id + ", title=" + title + ", num1=" + num1 + ", num2=" + num2 + ", num3=" + num3
-				+ ", num4=" + num4 + ", board=" + board + ", answer=" + answer + "]";
+				+ ", num4=" + num4 + ",  answer=" + answer + "]";
 	}
+	
+
 }
