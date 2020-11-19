@@ -66,18 +66,17 @@ public class BoardApiController {
 		List<Board> board =boardService.search(pageable,keyword,type);
 		int pageSize=0;
 		if(type.equals("title")) {
-			pageSize=boardRepository.findByTitle(keyword).size();
+			pageSize=boardRepository.findByTitleContaining(keyword).size();
+			System.out.println("!!");
 		}else {
-			pageSize=boardRepository.findByUsername(keyword).size();
+			pageSize=boardRepository.findByUsernameContaining(keyword).size();
 		}
 		List<BoardViewDto> list =new ArrayList<>();
 		for(Board X :board) {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		if(pageSize==1&&list.size()==0)
-			pageSize=0;
-		
+		System.out.println(pageSize);
 		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,(pageSize/10+1)==1&&list.size()==0 ? 0:(pageSize/10+1),list.size(),pageSize);
 		return bpvd;
 	}
