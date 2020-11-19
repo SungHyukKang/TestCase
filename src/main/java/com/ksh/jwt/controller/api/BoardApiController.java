@@ -78,7 +78,7 @@ public class BoardApiController {
 		if(pageSize==1&&list.size()==0)
 			pageSize=0;
 		
-		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,(pageSize/10+1)==1&&list.size()==0 ? 0:(pageSize/10+1),list.size(),pageSize==0 ? 0 : pageSize+1);
+		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,(pageSize/10+1)==1&&list.size()==0 ? 0:(pageSize/10+1),list.size(),pageSize);
 		return bpvd;
 	}
 	
