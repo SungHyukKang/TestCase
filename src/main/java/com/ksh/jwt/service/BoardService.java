@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ksh.jwt.dto.board.BoardViewDto;
 import com.ksh.jwt.model.Board;
+import com.ksh.jwt.model.Problem;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
+import com.ksh.jwt.repository.ProblemRepository;
 
 @Service
 public class BoardService {
@@ -19,10 +21,13 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 
+	@Autowired
+	private ProblemRepository problemRepository;
+
 	@Transactional
 	public void save(Board board, User user) {
 		board.setUser(user);
-		
+
 		boardRepository.save(board);
 	}
 
@@ -43,15 +48,14 @@ public class BoardService {
 		return bvd;
 	}
 
-	@Transactional(readOnly=true)
-	public List<Board> search(Pageable pageable,String keyword,String type) {
+	@Transactional(readOnly = true)
+	public List<Board> search(Pageable pageable, String keyword, String type) {
 		List<Board> list;
-		if(type.equals("title")) {
-			list = boardRepository.findByTitleContaining(keyword,pageable);
+		if (type.equals("title")) {
+			list = boardRepository.findByTitleContaining(keyword, pageable);
 			System.out.println(list);
 			return list;
-		}
-		else {
+		} else {
 			list = boardRepository.findByUsernameContaining(keyword, pageable);
 			System.out.println(list);
 			return list;
@@ -72,8 +76,8 @@ public class BoardService {
 		if (board.getUser().getId() != id) {
 			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
 		} else {
-			board.setContent(ubd.getContent());
 			board.setTitle(ubd.getContent());
+			board.setContent(ubd.getContent());
 			board.setImage(ubd.getImage());
 			board.setProblems(ubd.getProblems());
 		}
@@ -87,7 +91,12 @@ public class BoardService {
 		if (board.getUser().getId() != id) {
 			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
 		} else {
-			boardRepository.deleteById(boardId);
+			for (Problem p : board.getProblems()) {
+				System.out.println(p.getId());
+				problemRepository.delete(p);
+				System.out.println("!!");
+			}
+			boardRepository.delete(board);
 		}
 	}
 }

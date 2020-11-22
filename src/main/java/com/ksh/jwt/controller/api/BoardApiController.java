@@ -67,7 +67,6 @@ public class BoardApiController {
 		int pageSize=0;
 		if(type.equals("title")) {
 			pageSize=boardRepository.findByTitleContaining(keyword).size();
-			System.out.println("!!");
 		}else {
 			pageSize=boardRepository.findByUsernameContaining(keyword).size();
 		}
@@ -76,7 +75,6 @@ public class BoardApiController {
 			BoardViewDto bvd = new BoardViewDto(X.getId(), X.getTitle(), X.getContent(), X.getImage(), X.getCount(), X.getProblems(), X.getUser().getId(),X.getUser().getUsername(), X.getCreateDate());
 			list.add(bvd);
 		}
-		System.out.println(pageSize);
 		BoardPagingViewDto bpvd = new BoardPagingViewDto(list, pageable,(pageSize/10+1)==1&&list.size()==0 ? 0:(pageSize/10+1),list.size(),pageSize);
 		return bpvd;
 	}
@@ -85,9 +83,9 @@ public class BoardApiController {
 	@GetMapping("board/{id}")
 	public BoardViewDto view(@PathVariable int id ){
 		BoardViewDto boardView = boardService.view(id);
-		
 		return boardView;
 	}
+	
 	//내가 쓴 글 보기
 	@GetMapping("mypage/myBoard")
 	public List<Board> myBoard(@AuthenticationPrincipal PrincipalDetails principal,@PageableDefault(size=10,sort="id",direction = Sort.Direction.DESC) Pageable pageable){
@@ -95,6 +93,7 @@ public class BoardApiController {
 		List<Board> mb = boardService.myBoard(userId,pageable);
 		return mb;
 	}
+	
 	//제목 , 내용 , 문제 변경 .또 할게있나?image 변경/추가 , createDate 최신화?
 	@PutMapping("board/update/{boardId}")
 	public ResponseDto<String> updateBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId,@RequestBody Board board){
@@ -102,9 +101,11 @@ public class BoardApiController {
 		return new ResponseDto<>(HttpStatus.OK.value(),"1");
 	}
 	
-	@DeleteMapping("board/delete/{boardId}")
+	
+	@PostMapping("board/delete/{boardId}")
 	public ResponseDto<String> deleteBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId){
 		boardService.deleteBoard(principal.getUser().getId(),boardId);
+		
 		return new ResponseDto<>(HttpStatus.OK.value(),"1");
 	}
 }

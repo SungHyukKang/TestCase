@@ -112,7 +112,7 @@ public class UserService {
 	}
 
 	public boolean idCheck(String username) {
-		if(userRepository.findByUsername(username)!=null) {
+		if(userRepository.findByUsername(username)!=null) { 
 			return true;
 		}
 		return false;
