@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ksh.jwt.dto.problem.MySolvedDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
+import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.BoardRepository;
 import com.ksh.jwt.repository.ProblemRepository;
+import com.ksh.jwt.repository.UserRepository;
 
 @Service
 //@RequiredArgsConstructor -> @Authwired 생략 가능 final로 선언
@@ -22,6 +24,9 @@ public class ProblemService {
 	private ProblemRepository problemRepository;
 	@Autowired 
 	private BoardRepository boardRepository;
+	
+	@Autowired 
+	private UserRepository userRepository;
 	@Transactional
 	public void write(int boardId,List<Problem> problems,String username) {
 		Board board =boardRepository.findById(boardId).get();
@@ -77,6 +82,35 @@ public class ProblemService {
 		if(!boardRepository.findById(boardId).get().getUser().getUsername().equals(username)) {
 			throw new IllegalArgumentException("문제 작성자가 아닙니다.");
 		}
+		List<User> users = userRepository.findAll();
+		HashMap<Integer,Boolean> hsmap =new HashMap<>();
+		hsmap.put(problemId, true);
+		for(User u : users) {
+			if(u==null)
+				continue;
+			String sol = u.getSolved();
+			String wro = u.getWrong();
+			for(String p : u.getSolvedList()) {
+				if(hsmap.get(Integer.parseInt(p))!=null&&hsmap.get(Integer.parseInt(p)))
+					sol =replacePerfect(sol,p);
+			}
+			for(String w : u.getWrongList()) {
+				if(hsmap.get(Integer.parseInt(w))!=null&&hsmap.get(Integer.parseInt(w)))
+					wro =replacePerfect(wro,w);
+			}
+			u.setSolved(sol);
+			u.setWrong(wro);
+		}
 		problemRepository.deleteById(problemId);
+	}
+	public  String replacePerfect(String str,String change) {
+		StringBuilder sb = new StringBuilder();
+		for(String X : str.split(" ")) {
+			if(X.equals(change)) {
+				continue;
+			}
+			sb.append(X+" ");
+		}
+		return sb.toString().trim();
 	}
 }
