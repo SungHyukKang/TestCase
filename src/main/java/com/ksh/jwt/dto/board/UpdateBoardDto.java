@@ -18,4 +18,6 @@ public class UpdateBoardDto {
 	private String content;
 	private String image;
 	private List<Problem> problems;
+	private int userId;
+	private String username;
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ksh.jwt.config.auth.PrincipalDetails;
 import com.ksh.jwt.dto.board.BoardPagingViewDto;
 import com.ksh.jwt.dto.board.BoardViewDto;
+import com.ksh.jwt.dto.board.UpdateBoardDto;
 import com.ksh.jwt.dto.common.ResponseDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.repository.BoardRepository;
@@ -96,7 +97,8 @@ public class BoardApiController {
 	
 	//제목 , 내용 , 문제 변경 .또 할게있나?image 변경/추가 , createDate 최신화?
 	@PutMapping("board/update/{boardId}")
-	public ResponseDto<String> updateBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId,@RequestBody Board board){
+	public ResponseDto<String> updateBoard(@AuthenticationPrincipal PrincipalDetails principal,@PathVariable int boardId,@RequestBody UpdateBoardDto board){
+		System.out.println(board.toString());
 		boardService.updateBoard(principal.getUser().getId(),boardId,board);
 		return new ResponseDto<>(HttpStatus.OK.value(),"1");
 	}

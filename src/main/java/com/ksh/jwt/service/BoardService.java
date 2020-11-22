@@ -1,5 +1,6 @@
 package com.ksh.jwt.service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ksh.jwt.dto.board.BoardViewDto;
+import com.ksh.jwt.dto.board.UpdateBoardDto;
 import com.ksh.jwt.model.Board;
 import com.ksh.jwt.model.Problem;
 import com.ksh.jwt.model.User;
@@ -73,17 +75,51 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void updateBoard(int id, int boardId, Board ubd) {
+	public void updateBoard(int id, int boardId, UpdateBoardDto ubd) {
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> {
 			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
 		});
 		if (board.getUser().getId() != id) {
 			throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
 		} else {
-			board.setTitle(ubd.getContent());
+			board.setTitle(ubd.getTitle());
 			board.setContent(ubd.getContent());
 			board.setImage(ubd.getImage());
+			List<Problem> list = problemRepository.findByBoardId(boardId);
+			Collections.sort(list,(args0,args1)->{
+				return args0.getId()>=args1.getId() ? -1:1;
+			});
+			Collections.sort(ubd.getProblems(),(args0,args1)->{
+				return args0.getId()>=args1.getId() ? -1:1;
+			});
+			int o =0;
+			for(Problem p: list) {
+				Problem pro = problemRepository.findById(p.getId()).orElseThrow(()->{
+					return new IllegalArgumentException("문제를 찾을 수 없습니다.");
+				});
+				for(Problem pp : ubd.getProblems()) {
+					if(pp.getId()==pro.getId()) {
+						pro.setAnswer(pp.getAnswer());
+						pro.setNum1(pp.getNum1());
+						pro.setNum2(pp.getNum2());
+						pro.setNum3(pp.getNum3());
+						pro.setNum4(pp.getNum4());
+						pro.setTitle(pp.getTitle());
+						o++;
+						break;
+					}
+				}
+			}
+			if(list.size()<ubd.getProblems().size()) {
+				for(int i =o;i<ubd.getProblems().size();i++) {
+					ubd.getProblems().get(i).setBoard(board);
+					list.add(ubd.getProblems().get(i));
+				}
+			}
+			
+			problemRepository.saveAll(list);
 			board.setProblems(ubd.getProblems());
+			System.out.println(board.toString());
 		}
 	}
 
