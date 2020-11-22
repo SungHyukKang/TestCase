@@ -121,9 +121,9 @@ public class UserApiController {
 				sb3.append(key+" " );
 			}
 		}
-		vs.setAll(sb3.toString().trim());
-		vs.setMySolved(sb1.toString().trim());
-		vs.setVsSolved(sb2.toString().trim());
+		vs.setAllList(sb3.toString().trim().split(" "));
+		vs.setMySolvedList(sb1.toString().trim().split(" "));
+		vs.setVsSolvedList(sb2.toString().trim().split(" "));
 		return vs;
 	}
 	

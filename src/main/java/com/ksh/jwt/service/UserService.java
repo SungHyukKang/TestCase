@@ -166,6 +166,7 @@ public class UserService {
 	@Transactional
 	public void deleteInfo(int id) {
 		HashMap<Integer,Boolean> hsmap =new HashMap<>();
+		HashMap<Integer,Boolean> boardHashmap=new HashMap<>();
 		List<Board> boards= boardRepository.findByUserId(id);
 		List<User> users = userRepository.findAll();
 		for(Board b : boards) {
@@ -173,6 +174,7 @@ public class UserService {
 				hsmap.put(p.getId(),true);
 			}
 			boardRepository.deleteById(b.getId());
+			boardHashmap.put(b.getId(), true);
 		}
 		for(User u : users) {
 			if(u==null)
@@ -191,7 +193,7 @@ public class UserService {
 					wro =replacePerfect(wro,w);
 			}
 			for(String f : u.getFavoriteList()) {
-				if(hsmap.get(Integer.parseInt(f))!=null&&hsmap.get(Integer.parseInt(f)))
+				if(boardHashmap.get(Integer.parseInt(f))!=null&&boardHashmap.get(Integer.parseInt(f)))
 					fav=replacePerfect(fav,f);
 			}
 			u.setSolved(sol);
