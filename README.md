@@ -43,4 +43,7 @@
 |              글 조회 기능               |                 게시글을 조회할 수 있습니다.                 |
 |         회원 ID 및 PW 찾기 기능         | 회원가입시 기입한 이메일 정보로 ID 및 PW를 찾을 수 있습니다. |
 
+<h2>로그인</h2>
+
+![image-20201123001554663](C:\Users\95lin\AppData\Roaming\Typora\typora-user-images\image-20201123001554663.png)
 

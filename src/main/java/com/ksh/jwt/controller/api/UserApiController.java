@@ -1,5 +1,6 @@
 package com.ksh.jwt.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.ksh.jwt.dto.problem.SolvedDto;
 import com.ksh.jwt.dto.problem.VsDto;
 import com.ksh.jwt.dto.user.EnteredPwDto;
 import com.ksh.jwt.dto.user.FindPwDto;
+import com.ksh.jwt.dto.user.PairDto;
 import com.ksh.jwt.dto.user.UpdateUserDto;
 import com.ksh.jwt.model.User;
 import com.ksh.jwt.repository.ProblemRepository;
@@ -101,6 +103,7 @@ public class UserApiController {
 		VsDto vs = new VsDto();
 		String mySolved = principal.getUser().getSolved();
 		String vsSolved = userService.vsView(vsUsername);
+
 		Map<String, Integer> hsmap = new LinkedHashMap<>();
 		for (String X : mySolved.split(" ")) {
 			hsmap.put(X, 1);
@@ -120,13 +123,31 @@ public class UserApiController {
 				sb3.append(key + " ");
 			}
 		}
-		
-		if(!sb3.toString().trim().equals(""))
-			vs.setAllList(sb3.toString().trim().split(" "));
-		if(!sb1.toString().trim().equals(""))
-		vs.setMySolvedList(sb1.toString().trim().split(" "));
-		if(!sb2.toString().trim().equals(""))
-		vs.setVsSolvedList(sb2.toString().trim().split(" "));
+		List<PairDto> sb3list = new ArrayList<>();
+		List<PairDto> sb1list = new ArrayList<>();
+		List<PairDto> sb2list = new ArrayList<>();
+		if (!sb3.toString().trim().equals(""))
+		for (String X : sb3.toString().trim().split(" ")) {
+			int boardId=problemRepository.findById(Integer.parseInt(X)).get().getBoard().getId();
+			sb3list.add(new PairDto(boardId,Integer.parseInt(X)));
+		}	
+		System.out.println(sb3list.toString());
+		if (!sb1.toString().trim().equals(""))
+		for (String X : sb1.toString().trim().split(" ")) {
+			int boardId=problemRepository.findById(Integer.parseInt(X)).get().getBoard().getId();
+			sb1list.add(new PairDto(boardId,Integer.parseInt(X)));
+		}
+		if (!sb2.toString().trim().equals(""))
+		for (String X : sb2.toString().trim().split(" ")) {
+			int boardId=problemRepository.findById(Integer.parseInt(X)).get().getBoard().getId();
+			sb2list.add(new PairDto(boardId,Integer.parseInt(X)));
+		}
+		if (!sb3.toString().trim().equals(""))
+			vs.setAllList(sb3list);
+		if (!sb1.toString().trim().equals(""))
+			vs.setMySolvedList(sb1list);
+		if (!sb2.toString().trim().equals(""))
+			vs.setVsSolvedList(sb2list);
 		return vs;
 	}
 
