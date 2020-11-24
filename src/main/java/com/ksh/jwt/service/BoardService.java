@@ -75,7 +75,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void d(int id, int boardId, UpdateBoardDto ubd) {
+	public void updateBoard(int id, int boardId, UpdateBoardDto ubd) {
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> {
 			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
 		});
