@@ -2,6 +2,7 @@ package com.ksh.jwt.controller.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,9 @@ public class BoardApiController {
 	public ResponseDto<Integer> boardSave(@RequestBody Board board , @AuthenticationPrincipal PrincipalDetails principal){
 		board.setCount(0);
 		board.setUsername(principal.getUsername());
-		board.setImage(String.valueOf(board.getId()%4));
+		double num = (Math.random()*10000);
+		String imagenum=String.valueOf((int)num%4);
+		board.setImage(imagenum);
 		boardService.save(board,principal.getUser());
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),board.getId());
 	}
