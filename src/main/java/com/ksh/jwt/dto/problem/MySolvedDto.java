@@ -14,3 +14,4 @@ public class MySolvedDto {
 	private Integer problemId;
 	private String title;
 }
+

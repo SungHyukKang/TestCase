@@ -131,7 +131,6 @@ public class UserApiController {
 			int boardId=problemRepository.findById(Integer.parseInt(X)).get().getBoard().getId();
 			sb3list.add(new PairDto(boardId,Integer.parseInt(X)));
 		}	
-		System.out.println(sb3list.toString());
 		if (!sb1.toString().trim().equals(""))
 		for (String X : sb1.toString().trim().split(" ")) {
 			int boardId=problemRepository.findById(Integer.parseInt(X)).get().getBoard().getId();

@@ -14,6 +14,4 @@ import lombok.NoArgsConstructor;
 public class SolvedResponseDto {
 	private int boardId;
 	private List<MySolvedDto> problems;
-	
-	
 }

@@ -25,7 +25,7 @@
 
 ## 전체 시스템 구조도
 
-![image](https://user-images.githubusercontent.com/50865982/99224982-a2343500-282a-11eb-9eb2-69dfadd54366.png)
+![image](C:\Users\95lin\AppData\Roaming\Typora\typora-user-images\image-20201123230331257.png)
 
 
 
@@ -43,7 +43,52 @@
 |              글 조회 기능               |                 게시글을 조회할 수 있습니다.                 |
 |         회원 ID 및 PW 찾기 기능         | 회원가입시 기입한 이메일 정보로 ID 및 PW를 찾을 수 있습니다. |
 
-<h2>로그인</h2>
+<h2>로그인 화면</h2>
 
-![image-20201123001554663](C:\Users\95lin\AppData\Roaming\Typora\typora-user-images\image-20201123001554663.png)
+![image](https://user-images.githubusercontent.com/50865982/99971367-68da6700-2de0-11eb-98c8-23aa59119058.png)
 
+<h2>아이디 찾기 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971380-6c6dee00-2de0-11eb-8ec6-67b73d0e2d95.png)
+
+<h2>비밀번호 분실 시 임시 비밀번호 발급 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971387-6f68de80-2de0-11eb-8254-07c6629c04d1.png)
+
+<h2>회원가입 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971402-742d9280-2de0-11eb-9328-ba1d7dfe563c.png)
+
+<h2>메인 페이지 화면</h2>
+
+
+
+![image](https://user-images.githubusercontent.com/50865982/99971412-77c11980-2de0-11eb-81ac-045216a77447.png)
+
+<h2>게시글 검색 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971419-7a237380-2de0-11eb-941c-09a9ff770bfe.png)
+
+<h2>문제 풀기 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971429-7bed3700-2de0-11eb-992a-affc2c8ede5d.png)
+
+<h2>정답 확인 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971440-7e4f9100-2de0-11eb-9edb-9a1f1651bcea.png)
+
+<h2>다른 유저와 배틀 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99974186-ef447800-2de3-11eb-9f88-cda3fd263beb.png)
+
+<h2>퀴즈 등록 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971449-83acdb80-2de0-11eb-8be9-84a7e3de90e5.png)
+
+<h2>문제 등록 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971464-87d8f900-2de0-11eb-89a4-e0a10b200b48.png)
+
+<h2>문제 수정 화면</h2>
+
+![image](https://user-images.githubusercontent.com/50865982/99971496-91626100-2de0-11eb-9b15-658f193a85e4.png)

@@ -40,7 +40,7 @@ public class Problem {
 //	@Column(nullable=false)
 //	private String num5;
 	
-	@ManyToOne(fetch=FetchType.LAZY,cascade = CascadeType.REMOVE)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
+	@ManyToOne(fetch=FetchType.LAZY)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId",nullable = false)
 	@JsonBackReference
 	private Board board;

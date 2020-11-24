@@ -25,7 +25,6 @@ import lombok.ToString;
 
 @Entity
 @Data
-@ToString
 public class Board {
 	@Id // 해당 테이블의 PK
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //시퀀스 AUTO_INCREMENT 
