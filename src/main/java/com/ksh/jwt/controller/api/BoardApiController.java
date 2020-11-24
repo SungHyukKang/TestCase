@@ -45,7 +45,7 @@ public class BoardApiController {
 		board.setCount(0);
 		board.setUsername(principal.getUsername());
 		double num = (Math.random()*10000);
-		String imagenum=String.valueOf((int)num%4);
+		String imagenum=String.valueOf((int)num%10);
 		board.setImage(imagenum);
 		boardService.save(board,principal.getUser());
 		return new ResponseDto<Integer>(HttpStatus.OK.value(),board.getId());

@@ -75,7 +75,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void updateBoard(int id, int boardId, UpdateBoardDto ubd) {
+	public void d(int id, int boardId, UpdateBoardDto ubd) {
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> {
 			return new IllegalArgumentException("게시글을 찾을 수 없습니다.");
 		});
@@ -119,6 +119,7 @@ public class BoardService {
 			
 			problemRepository.saveAll(list);
 			board.setProblems(ubd.getProblems());
+			System.out.println(board.getProblems());
 			System.out.println(board.toString());
 		}
 	}
