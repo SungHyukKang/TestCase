@@ -84,7 +84,6 @@ public class BoardService {
 		} else {
 			board.setTitle(ubd.getTitle());
 			board.setContent(ubd.getContent());
-			board.setImage(ubd.getImage());
 			List<Problem> list = problemRepository.findByBoardId(boardId);
 			Collections.sort(list,(args0,args1)->{
 				return args0.getId()>=args1.getId() ? -1:1;
