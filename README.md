@@ -43,3 +43,10 @@
 |              글 조회 기능               |                 게시글을 조회할 수 있습니다.                 |
 |         회원 ID 및 PW 찾기 기능         | 회원가입시 기입한 이메일 정보로 ID 및 PW를 찾을 수 있습니다. |
 
+
+<h2>시연 </h2>
+![ezgif-6-b31cc3bb6778](https://user-images.githubusercontent.com/50865982/100862752-e84df180-34d6-11eb-8ef8-b61946433c56.gif)
+![ezgif-4-b9dce5b14f70](https://user-images.githubusercontent.com/50865982/100862740-e4ba6a80-34d6-11eb-9dd4-e9494b283071.gif)
+![ezgif-4-e7c4cd6b104a](https://user-images.githubusercontent.com/50865982/100862743-e6842e00-34d6-11eb-8840-8c5534de2fe9.gif)
+
+
