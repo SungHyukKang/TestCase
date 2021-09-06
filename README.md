@@ -43,7 +43,7 @@
 |         회원 ID 및 PW 찾기 기능         | 회원가입시 기입한 이메일 정보로 ID 및 PW를 찾을 수 있습니다. |
 
 
-
+<div align='center'>
 <h2>로그인 화면</h2>
 
 ![image](https://user-images.githubusercontent.com/50865982/99971367-68da6700-2de0-11eb-98c8-23aa59119058.png)
@@ -103,3 +103,4 @@
 ![ezgif-4-b9dce5b14f70](https://user-images.githubusercontent.com/50865982/100862740-e4ba6a80-34d6-11eb-9dd4-e9494b283071.gif)
 
 ![ezgif-4-e7c4cd6b104a](https://user-images.githubusercontent.com/50865982/100862743-e6842e00-34d6-11eb-8840-8c5534de2fe9.gif)
+  </div>
