@@ -42,6 +42,7 @@ public class Problem {
 	
 	@ManyToOne(fetch=FetchType.LAZY)//하나의 게시글은 여러개의 문제를 가지고 있을 수 있다.
 	@JoinColumn(name="boardId",nullable = false)
+	@JsonBackReference
 	private Board board;
 	
 	@Column(nullable=false)
