@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,7 +41,7 @@ public class Board {
 	
 	private int count;
 	
-	@OneToMany(mappedBy = "board",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE) //1 대 N 관계 , mappedBy를 선언함으로서 연관관계의 주인이 아니다. 즉 테이블의 구성요소가
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE) //1 대 N 관계 , mappedBy를 선언함으로서 연관관계의 주인이 아니다. 즉 테이블의 구성요소가
 	@JsonIgnoreProperties({"board"}) // 무한 참조 방지 
 	private List<Problem> problems;
 	
